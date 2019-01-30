@@ -48,7 +48,7 @@ public class ${claszName} extends BaseModel<${claszName}> {
 		<#if cols_index % 3==0>
 		bf.append("\n");
 		</#if>
-		bf.append("${cols.javaNameLo}(${cols.remarks!''}):").append(${cols.javaNameLo});
+		bf.append("${cols.javaNameLo}(${cols.remarks!''}):").append(${cols.javaNameLo}+" ");
 		</#list>
 		</#if>
 		return bf.toString();
