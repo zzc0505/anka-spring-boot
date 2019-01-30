@@ -5,8 +5,8 @@
 	<!-- 日志文件目录和压缩文件目录配置 -->
 	<Properties>
 		<Property name="projectName">anka-spring-boot</Property>
-		<Property name="fileName">${projectName}/spring-boot/logs</Property>
-		<Property name="fileGz">${projectName}/spring-boot/logs/7z</Property>
+		<Property name="fileName">/${projectName}/spring-boot/logs</Property>
+		<Property name="fileGz">/${projectName}/spring-boot/logs/7z</Property>
 		<property name="PATTERN">%highlight{%d{yyyy-MM-dd HH:mm:ss} [%5p] [%40.40c{1.}:%3L] - %m%n}{FATAL=white, ERROR=red, WARN=blue, INFO=Green, DEBUG=Yellow, TRACE=blue}</property>
 	</Properties>
 
