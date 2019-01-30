@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<#include "/core/include/include.ftl" />
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="js/layui/css/layui.css" />
+		<style type="text/css">
+			input:-webkit-autofill {
+				-webkit-box-shadow: 0 0 0px 1000px white inset;
+			}
+		</style>
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-fluid">
+			<div class="layui-form layui-form-pane">
+				<div class="layui-form-item"></div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
+					<div class="layui-input-block">
+						<input name="crurName" class="layui-input" type="text" placeholder="请输入用户名" autocomplete="off" lay-verify="username"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-cellphone"></i></label>
+					<div class="layui-input-block">
+						<input name="crurMobile" class="layui-input" type="text" placeholder="请输入11位手机号" autocomplete="off" lay-verify="required|phone|number"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-read"></i></label>
+					<div class="layui-input-block">
+						<input name="crurEmail" class="layui-input" type="text" placeholder="请输入邮件地址" autocomplete="off" lay-verify="email"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+				    <label class="layui-form-label"><i class="layui-icon layui-icon-male"></i></label>
+				    <div class="layui-input-block">
+				      <input type="radio" name="crurSex" value="1" title="男" checked>
+				      <input type="radio" name="crurSex" value="2" title="女" >
+				      <input type="radio" name="crurSex" value="3" title="保密" >
+				    </div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+					<div class="layui-input-block">
+						<input name="crurPassword" class="layui-input" type="password" placeholder="请输入密码" autocomplete="off" lay-verify="password"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+					<div class="layui-input-block">
+						<input name="passwordCheck" class="layui-input" type="password" placeholder="请再次输入密码" autocomplete="off" lay-verify="passcheck"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-btn-container">
+						<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="login">
+							<i class="layui-icon layui-icon-ok-circle"></i>提交
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="${base}/js/layui/layui.js"></script>
+		<script>
+			layui.use(['layer','form'],function(){
+				var layer = layui.layer
+				,form = layui.form
+				,$ = layui.jquery;
+				form.verify({
+					 username: function(value, item){
+					    if(!/^[a-zA-Z\u4e00-\u9fa5]+$/.test(value)){
+					      	return '用户名只能输入中文和英文';
+					    }
+					    if(!/^\S{1,10}$/.test(value)){
+					    	return '用户名长度为1-10位';
+					    }
+					 }
+					 ,password: function(value, item){
+					 	if(/^[\u4e00-\u9fa5]+$/.test(value)){
+					 		return '密码不能为中文';
+					 	}
+					    if(!/^[\S]{6,16}$/.test(value)){
+					      	return '密码长度为6-16位';
+					    }
+					 }
+					 ,passcheck: function(value, item){
+					    if($("input[name='crurPassword']").val()!=value){
+					      	return '俩次密码输入不一致！';
+					    }
+					 }
+				});
+				//监控表单提交
+				form.on('submit(login)', function(data){
+					var obj = data.field;
+					$.post("${base}/postRegister",obj,function(res){
+						if(res.success){
+							layer.msg(res.msg+'3秒后关闭', {icon: 1});
+							setInterval(function(){
+								parent.layer.closeAll();
+							},"3000")
+						}else{
+							layer.msg(res.msg, {icon: 5});
+							return false;
+						}
+					});
+				});
+			})
+			//登陆按钮绑定回车
+			function onEnter(){
+				if(window.event.keyCode == 13){
+					document.getElementsByTagName("button")[0].click();
+				}
+			}
+		</script>
+	</body>
+</html>

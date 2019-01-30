@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreUserMapper">
+	<resultMap type="CoreUser" id="fieldMapper">
+		<id property="crurUuid" column="CRUR_UUID" jdbcType="VARCHAR"/><!--uuid-->
+		<result property="crurName" column="CRUR_NAME" jdbcType="VARCHAR"/><!--用户名-->
+		<result property="crurPassword" column="CRUR_PASSWORD" jdbcType="VARCHAR"/><!--用户密码 -->
+		<result property="crurSex" column="CRUR_SEX" jdbcType="VARCHAR"/><!--性别 1男2女3保密-->
+		<result property="crurMobile" column="CRUR_MOBILE" jdbcType="VARCHAR"/><!--手机号码-->
+		<result property="crurTel" column="CRUR_TEL" jdbcType="VARCHAR"/><!--固话号码-->
+		<result property="crurEmail" column="CRUR_EMAIL" jdbcType="VARCHAR"/><!--邮件地址-->
+		<result property="crurPost" column="CRUR_POST" jdbcType="VARCHAR"/><!--职务-->
+		<result property="crurCrorUuid" column="CRUR_CROR_UUID" jdbcType="VARCHAR"/><!--所属机构uuid-->
+		<result property="crurCrorName" column="CRUR_CROR_NAME" jdbcType="VARCHAR"/><!--所属机构name-->
+		<result property="crurLogtype" column="CRUR_LOGTYPE" jdbcType="VARCHAR"/><!--登陆方式-->
+		<result property="crurStatus" column="CRUR_STATUS" jdbcType="VARCHAR"/><!--用户状态 0启用1禁用-->
+		<result property="crurOrd" column="CRUR_ORD" jdbcType="INTEGER"/><!--排序号-->
+		<result property="crurLockpassword" column="CRUR_LOCKPASSWORD" jdbcType="VARCHAR"/><!--锁屏密码-->
+		<result property="crurNature" column="CRUR_NATURE" jdbcType="VARCHAR"/><!--用户性质-->
+		<result property="crurPinyin" column="CRUR_PINYIN" jdbcType="VARCHAR"/><!--拼音简写-->
+		<result property="crurPasswordexptime" column="CRUR_PASSWORDEXPTIME" jdbcType="TIMESTAMP"/><!--密码过期时间-->
+		<result property="crurCdate" column="CRUR_CDATE" jdbcType="TIMESTAMP"/><!--创建时间-->
+		<result property="crurUdate" column="CRUR_UDATE" jdbcType="TIMESTAMP"/><!--修改时间-->
+		<result property="crurRemarkers" column="CRUR_REMARKERS" jdbcType="VARCHAR"/><!--备注-->
+		<result property="crurLockstatus" column="CRUR_LOCKSTATUS" jdbcType="VARCHAR"/><!--锁屏状态 0未锁1已锁-->
+	</resultMap>
+	
+	<sql id="field">
+		CRUR_UUID,
+		CRUR_NAME,
+		CRUR_PASSWORD,
+		CRUR_SEX,
+		CRUR_MOBILE,
+		CRUR_TEL,
+		CRUR_EMAIL,
+		CRUR_POST,
+		CRUR_CROR_UUID,
+		CRUR_CROR_NAME,
+		CRUR_LOGTYPE,
+		CRUR_STATUS,
+		CRUR_ORD,
+		CRUR_LOCKPASSWORD,
+		CRUR_NATURE,
+		CRUR_PINYIN,
+		CRUR_PASSWORDEXPTIME,
+		CRUR_CDATE,
+		CRUR_UDATE,
+		CRUR_REMARKERS,
+		CRUR_LOCKSTATUS
+	</sql>
+	
+</mapper>
