@@ -2,6 +2,7 @@ package com.anka.apps.controller;
 
 import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
+import com.anka.base.utils.PassSecurity;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,9 +76,51 @@ public class CoreUserController {
     public ModelAndView userInfo(CoreUser model){
     	ModelAndView mv = new ModelAndView();
     	model = coreUserService.get(model.getCrurUuid());
+    	model.setCrurPassword("");
     	mv.addObject("userInfo", model);
     	mv.setViewName("core/user/userinfo");
     	return mv;
     }
+    
+    @PostMapping("/userInfoChange")
+	public @ResponseBody Map<String, Object> userInfoChange(CoreUser model){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Integer count = coreUserService.update(model);
+		if(count==1){
+			map.put("success", true);
+			map.put("msg", "操作成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "操作失败！");
+		}
+		map.put("data", "");
+		return map;
+	}
+    
+    @RequestMapping("/passWordChange")
+    public ModelAndView passWordChange(CoreUser model){
+    	ModelAndView mv = new ModelAndView();
+    	model = coreUserService.get(model.getCrurUuid());
+    	model.setCrurPassword(PassSecurity.getDecode(model.getCrurPassword(), "ANKA"));
+    	mv.addObject("userInfo", model);
+    	mv.setViewName("core/user/passwordchange");
+    	return mv;
+    }
+    
+    @PostMapping("/passChange")
+	public @ResponseBody Map<String, Object> passChange(CoreUser model){
+		Map<String, Object> map = new HashMap<String, Object>();
+		model.setCrurPassword(PassSecurity.getEncode(model.getCrurPassword(), "ANKA"));
+		Integer count = coreUserService.update(model);
+		if(count==1){
+			map.put("success", true);
+			map.put("msg", "操作成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "操作失败！");
+		}
+		map.put("data", "");
+		return map;
+	}
 
 }
