@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 * @version ${version}
 */
 @Controller
-@RequestMapping("/${baseRequestMapping}")
+@RequestMapping("${baseRequestMapping}")
 public class ${claszName}Controller {
 
     @Resource
