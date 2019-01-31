@@ -85,5 +85,5 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 			return false;
 		}
 	}
-	
+
 }
