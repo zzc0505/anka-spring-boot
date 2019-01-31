@@ -2,6 +2,7 @@ package com.anka.apps.controller;
 
 import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
+import com.anka.base.controller.BaseController;
 import com.anka.base.utils.PassSecurity;
 
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,8 @@ import javax.annotation.Resource;
 * @version 1.0.0
 */
 @Controller
-@RequestMapping("/coreUser")
-public class CoreUserController {
+@RequestMapping("/core/user")
+public class CoreUserController extends BaseController<CoreUser>{
 
     @Resource
     private CoreUserService coreUserService;
@@ -122,5 +123,5 @@ public class CoreUserController {
 		map.put("data", "");
 		return map;
 	}
-
+    
 }
