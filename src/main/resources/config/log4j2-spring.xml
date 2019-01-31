@@ -54,7 +54,7 @@
 			<Policies>
 				<TimeBasedTriggeringPolicy interval="6"
 					modulate="true" />
-				<SizeBasedTriggeringPolicy size="50 MB" />
+				<SizeBasedTriggeringPolicy size="20 MB" />
 			</Policies>
 
 			<Filters>
