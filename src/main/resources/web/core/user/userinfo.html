@@ -83,7 +83,7 @@
 				//监控表单提交
 				form.on('submit(change)', function(data){
 					var obj = data.field;
-					$.post("${base}/coreUser/userInfoChange",obj,function(res){
+					$.post("${base}/core/user/userInfoChange",obj,function(res){
 						if(res.success){
 							layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
 								parent.layer.closeAll();
