@@ -48,8 +48,8 @@
 							${user_info.crurName}
 						</a>
 						<dl class="layui-nav-child">
-							<dd><a href="javascript:;" lay-href="${base}/coreUser/userInfo"><i class="layui-icon layui-icon-form"></i>基本资料</a></dd>
-							<dd><a href="javascript:;" lay-href="${base}/coreUser/passWordChange"><i class="layui-icon layui-icon-password"></i>修改密码</a></dd>
+							<dd><a href="javascript:;" lay-href="${base}/core/user/userInfo"><i class="layui-icon layui-icon-form"></i>基本资料</a></dd>
+							<dd><a href="javascript:;" lay-href="${base}/core/user/passWordChange"><i class="layui-icon layui-icon-password"></i>修改密码</a></dd>
 						</dl>
 					</li>
 					<li class="layui-nav-item">
@@ -115,7 +115,7 @@
 				,layer = layui.layer
 				,$ = layui.jquery;
 				//锁屏初始化
-				$.post("${base}/coreUser/lockChecked",{"crurUuid":"${user_info.crurUuid}"},function(res){
+				$.post("${base}/core/user/lockChecked",{"crurUuid":"${user_info.crurUuid}"},function(res){
 					if(res.success){
 						layer.open({
 							title:"已锁屏"
@@ -126,7 +126,7 @@
 							,yes: function(index, layero){
 								var crurLockpassword = layero.find('.layui-layer-content input').val();
 								if(crurLockpassword!=""){
-									$.post("${base}/coreUser/unLocked",
+									$.post("${base}/core/user/unLocked",
 									{"crurUuid":"${user_info.crurUuid}","crurLockpassword":crurLockpassword},
 									function(result){
 										if(result.success){
@@ -220,7 +220,7 @@
 							,yes: function(ind, obj){
 								var crurLockpassword = obj.find('.layui-layer-content input').val();
 								if(crurLockpassword!=""){
-									$.post("${base}/coreUser/locked",
+									$.post("${base}/core/user/locked",
 									{"crurUuid":"${user_info.crurUuid}","crurLockpassword":crurLockpassword},
 									function(res){
 										if(res.success){
@@ -234,7 +234,7 @@
 												,yes: function(index, layero){
 													var crurLockpassword = layero.find('.layui-layer-content input').val();
 													if(crurLockpassword!=""){
-														$.post("${base}/coreUser/unLocked",
+														$.post("${base}/core/user/unLocked",
 														{"crurUuid":"${user_info.crurUuid}","crurLockpassword":crurLockpassword},
 														function(result){
 															if(result.success){
