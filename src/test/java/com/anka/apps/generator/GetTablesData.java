@@ -80,7 +80,7 @@ public class GetTablesData {
 		map.put("basePackageModel", MODEL_PACKAGE);
 		map.put("basePackageDao", DAO_PACKAGE);
 		map.put("basePackageController", CONTROLLER_PACKAGE);
-		map.put("baseRequestMapping", GeneratorUtils.underlineCamel(tableName, true));
+		map.put("baseRequestMapping", GeneratorUtils.tableNameToPath(tableName));
 		/**
 		 * 获取可在指定类别中使用的表列的描述。 方法原型:ResultSet getColumns(String catalog,String
 		 * schemaPattern,String tableNamePattern,String columnNamePattern)

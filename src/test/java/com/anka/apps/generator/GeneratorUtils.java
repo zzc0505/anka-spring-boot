@@ -14,7 +14,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 public class GeneratorUtils {
-
+	
 	/**
 	 * 下划线转驼峰法
 	 * 
@@ -44,7 +44,19 @@ public class GeneratorUtils {
 		}
 		return sb.toString();
 	}
-	
+	/**
+	 * 根据下划线拆分表名，转为路径
+	 * @param tableName
+	 * @return
+	 */
+	public static String tableNameToPath(String tableName){
+		String str = "";
+		String[] temp = tableName.split("_");
+		for (String t : temp) {
+			str+="/"+t.toLowerCase();
+		}
+		return str;
+	}
 	/**
 	 * @author AnkaRebirth
 	 * @param type java.sql.Types 对应的值

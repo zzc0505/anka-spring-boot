@@ -21,7 +21,7 @@ public class AnkaGenerator {
 	private static final String PASS_WORD = "123456";
 
 	// 表名称，不限大小写，可包含单字符通配符("_"),或多字符通配符("%");
-	private static final String TALBE_NAME = "CORE_USER";
+	private static final String TALBE_NAME = "core_orginaze";
 	// 项目基础包名称，根据自己公司的项目修改
 	private static final String BASE_PACKAGE = "com.anka.apps";
 	// Model所在包
@@ -64,16 +64,16 @@ public class AnkaGenerator {
 			genMapper(map,MAPPER_PATH);
 			
 			/** Dao 生成  */
-			//genDao(map, GeneratorUtils.packageConvertPath(DAO_PACKAGE));
+			genDao(map, GeneratorUtils.packageConvertPath(DAO_PACKAGE));
 			
 			/** Service 生成 */
-			//genService(map, GeneratorUtils.packageConvertPath(SERVICE_PACKAGE));
+			genService(map, GeneratorUtils.packageConvertPath(SERVICE_PACKAGE));
 			
 			/** ServiceImpl 生成 */
-			//genServiceImpl(map, GeneratorUtils.packageConvertPath(SERVICE_IMPL_PACKAGE));
+			genServiceImpl(map, GeneratorUtils.packageConvertPath(SERVICE_IMPL_PACKAGE));
 			
 			/** Controller 生成*/
-			//genController(map, GeneratorUtils.packageConvertPath(CONTROLLER_PACKAGE));
+			genController(map, GeneratorUtils.packageConvertPath(CONTROLLER_PACKAGE));
 		}
 		//==================================代码生成主体部分==================================
 	}
