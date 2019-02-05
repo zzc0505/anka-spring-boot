@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<#include "/core/include/include.ftl" />
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="${base}/js/layui/css/layui.css" />
+		<style>
+			.layui-admin-card-header{
+				padding: 15px;
+			}
+			.layui-admin-card-body{
+				height: 500px;
+			}
+		</style>
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-fluid">
+			<div class="layui-card">
+				<div class="layui-form layui-card-header layui-admin-card-header">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">ID</label>
+							<div class="layui-input-block">
+								<input name="id" class="layui-input" type="text" placeholder="请输入" autocomplete="off"/>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">用户名</label>
+							<div class="layui-input-block">
+								<input name="id" class="layui-input" type="text" placeholder="请输入" autocomplete="off"/>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">邮箱</label>
+							<div class="layui-input-block">
+								<input name="id" class="layui-input" type="text" placeholder="请输入" autocomplete="off"/>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">性别</label>
+							<div class="layui-input-block">
+								<input name="id" class="layui-input" type="text" placeholder="请输入" autocomplete="off"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-card-body layui-admin-card-body">
+				    <table class="layui-hide" id="datatable"></table>
+				</div>
+			</div>
+		</div>
+		<script src="${base}/js/layui/layui.js"></script>
+		<script>
+			layui.use(['element','layer','form','table'],function(){
+				var element = layui.element
+				,layer = layui.layer
+				,form = layui.form
+				,table = layui.table
+				,$ = layui.jquery;
+				
+				table.render({
+				    elem: '#datatable'
+				    ,height: 480
+				    ,method: 'post'
+				    ,url:'${base}/core/user/getList' //数据接口
+				    ,cols: [[
+      					{type: 'checkbox'}
+      					,{type:'numbers',title: '序号'}
+				   		,{field:'crurUuid', title: 'UUID', hide:true}
+				      	,{field:'crurName', title: '用户名',align:'center'}
+				      	,{field:'crurSex', title: '性别',align:'center',templet: function(d){
+				      		if(d.crurSex=="1"){
+				      			return '男';
+				      		}else if(d.crurSex=="2"){
+				      			return '女';
+				      		}else{
+				      			 return '保密';
+				      		}
+					     }}
+				      	,{field:'crurMobile',  title: '手机号',align:'center'}
+				      	,{field:'crurEmail', title: '邮箱',align:'center'}
+				      	,{field:'crurStatus', title: '状态',align:'center', sort: true,templet: function(d){
+				      		if(d.crurStatus=="0"){
+				      			return '启用';
+				      		}else if(d.crurSex=="1"){
+				      			return '禁用';
+				      		}
+					     }}
+				      	,{field:'crurOrd',title: '排序',align:'center', sort: true}
+				    ]]
+				    ,page: true
+				});
+			});
+		</script>
+	</body>
+</html>
