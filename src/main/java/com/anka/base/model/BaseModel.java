@@ -13,8 +13,6 @@ public class BaseModel<T extends BaseModel<T>> implements Serializable{
 	private static final long serialVersionUID = 5627261198432599387L;
 
 	@Transient
-	private T model;
-	@Transient
 	private Map<String, String> strMap;
 	@Transient
 	private Map<String, Object> objMap;
@@ -22,14 +20,10 @@ public class BaseModel<T extends BaseModel<T>> implements Serializable{
 	private List<String> strList;
 	@Transient
 	private List<Object> objList;
-
-	public T getModel() {
-		return model;
-	}
-
-	public void setModel(T model) {
-		this.model = model;
-	}
+	@Transient
+	private Integer page;
+	@Transient
+	private Integer limit;
 
 	public Map<String, String> getStrMap() {
 		return this.strMap = this.strMap == null?new HashMap<String, String>():this.strMap;
@@ -61,6 +55,22 @@ public class BaseModel<T extends BaseModel<T>> implements Serializable{
 
 	public void setObjList(List<Object> objList) {
 		this.objList = objList;
+	}
+
+	public Integer getPage() {
+		return this.page==null?0:this.page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getLimit() {
+		return this.limit==null?0:this.limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
 	}
 	
 }
