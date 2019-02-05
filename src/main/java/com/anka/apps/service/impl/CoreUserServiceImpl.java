@@ -5,6 +5,7 @@ import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
 import com.anka.base.service.CrudBaseServiceSupport;
 import com.anka.base.utils.PassSecurity;
+import com.github.pagehelper.PageHelper;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -86,4 +87,10 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 		}
 	}
 
+	@Override
+	public List<CoreUser> getList(CoreUser model) {
+		PageHelper.startPage(model.getPage(), model.getLimit());
+		return super.selectModelList(model);
+	}
+	
 }

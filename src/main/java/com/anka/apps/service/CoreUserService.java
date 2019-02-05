@@ -1,5 +1,7 @@
 package com.anka.apps.service;
 
+import java.util.List;
+
 import com.anka.apps.model.CoreUser;
 import com.anka.base.service.CrudBaseService;
 
@@ -44,4 +46,11 @@ public interface CoreUserService extends CrudBaseService<CoreUser> {
 	 * @return
 	 */
 	public Boolean lockChecked(CoreUser model);
+	/**
+	 * 获取数据库用户列表
+	 * @param model
+	 * @return
+	 */
+	public List<CoreUser> getList(CoreUser model);
+	
 }
