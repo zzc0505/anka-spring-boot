@@ -4,6 +4,7 @@ import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
 import com.anka.base.controller.BaseController;
 import com.anka.base.utils.PassSecurity;
+import com.github.pagehelper.Page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -121,6 +123,26 @@ public class CoreUserController extends BaseController<CoreUser>{
 			map.put("msg", "操作失败！");
 		}
 		map.put("data", "");
+		return map;
+	}
+    
+    @PostMapping("/getList")
+	public @ResponseBody Map<String, Object> getList(CoreUser model){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CoreUser> list = coreUserService.getList(model);
+		if(list.size()>0){
+			map.put("code", 0);
+			map.put("success", true);
+			map.put("msg", "");
+			map.put("data", list);
+			map.put("count",((Page) list).getTotal());
+		}else{
+			map.put("code", 500);
+			map.put("success", false);
+			map.put("msg", "操作失败！");
+			map.put("data", list);
+			map.put("count",0);
+		}
 		return map;
 	}
     
