@@ -8,8 +8,10 @@ import com.anka.base.utils.PassSecurity;
 import com.github.pagehelper.PageHelper;
 
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -89,8 +91,19 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 
 	@Override
 	public List<CoreUser> getList(CoreUser model) {
+		Example e = new Example(CoreUser.class);
+		Criteria cn = e.createCriteria();
+		if(StringUtils.hasText(model.getCrurName())){
+			cn.andLike("crurName", "%"+model.getCrurName()+"%");
+		}
+		if(StringUtils.hasText(model.getCrurMobile())){
+			cn.andLike("crurMobile",  "%"+model.getCrurMobile()+"%");
+		}
+		if(StringUtils.hasText(model.getCrurEmail())){
+			cn.andLike("crurEmail",  "%"+model.getCrurEmail()+"%");
+		}
 		PageHelper.startPage(model.getPage(), model.getLimit());
-		return super.selectModelList(model);
+		return super.selectByExample(e);
 	}
 	
 }
