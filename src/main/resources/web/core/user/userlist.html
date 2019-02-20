@@ -18,7 +18,7 @@
 		<div class="layui-fluid">
 			<div class="layui-card">
 				<div class="layui-form layui-card-header layui-admin-card-header">
-					<div class="layui-form-item">
+					<div class="table-search layui-form-item">
 						<div class="layui-inline">
 							<label class="layui-form-label">用户名</label>
 							<div class="layui-input-block">
@@ -44,6 +44,7 @@
 							</div>
 						</div>
 						<button class="layui-btn" data-type="reload">搜索</button>
+						<button class="layui-btn" data-type="remove">清除</button>
 					</div>
 				</div>
 				<div class="layui-card-body layui-admin-card-body">
@@ -63,6 +64,8 @@
 				    ,height: 480
 				    ,method: 'post'
 				    ,url:'${base}/core/user/getList' //数据接口
+				    ,id:'datatable'
+				    ,page: true
 				    ,cols: [[
       					{type: 'checkbox'}
       					,{type:'numbers',title: '序号'}
@@ -88,29 +91,41 @@
 					     }}
 				      	,{field:'crurOrd',title: '排序',align:'center', sort: true}
 				    ]]
-				    ,page: true
 				});
+				//定义查询动作
 				var $ = layui.$, active = {
 					reload: function(){
-				    	var crurName = $('#crurName');
-				    	
-				    	var crurMobile = $("#crurMobile");
 				    	//执行重载
-				      	table.reload('testReload', {
+				      	table.reload('datatable', {
+				      		page: {
+					          	curr: 1 //重新从第 1 页开始
+					        }
+					        ,where: {
+					        	crurName: $('#crurName').val()
+					           	,crurMobile: $("#crurMobile").val()
+					           	,crurEmail: $("#crurEmail").val()
+					        }
+				      	});
+				    }
+				    ,remove: function(){
+				    	$('#crurName').val("");
+				    	$("#crurMobile").val("");
+				    	$("#crurEmail").val("");
+				    	//执行重载
+				      	table.reload('datatable', {
 					        page: {
 					          	curr: 1 //重新从第 1 页开始
 					        }
 					        ,where: {
-					        	key: {
-					            	crurName: crurName.val()
-					            	,crurMobile: crurMobile.val()
-					          	}
+					        	crurName: ""
+					           	,crurMobile: ""
+					           	,crurEmail: ""
 					        }
 				    	});
 				    }
 				};
-				
-				$('.demoTable .layui-btn').on('click', function(){
+				//绑定按钮
+				$('.table-search .layui-btn').on('click', function(){
 				    var type = $(this).data('type');
 				    active[type] ? active[type].call(this) : '';
 				});
