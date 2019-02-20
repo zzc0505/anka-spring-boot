@@ -130,19 +130,11 @@ public class CoreUserController extends BaseController<CoreUser>{
 	public @ResponseBody Map<String, Object> getList(CoreUser model){
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<CoreUser> list = coreUserService.getList(model);
-		if(list.size()>0){
-			map.put("code", 0);
-			map.put("success", true);
-			map.put("msg", "");
-			map.put("data", list);
-			map.put("count",((Page) list).getTotal());
-		}else{
-			map.put("code", 500);
-			map.put("success", false);
-			map.put("msg", "操作失败！");
-			map.put("data", list);
-			map.put("count",0);
-		}
+		map.put("code", 0);
+		map.put("success", true);
+		map.put("msg", "");
+		map.put("data", list);
+		map.put("count",((Page) list).getTotal());
 		return map;
 	}
     
