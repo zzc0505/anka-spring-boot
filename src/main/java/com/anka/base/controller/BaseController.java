@@ -2,19 +2,22 @@ package com.anka.base.controller;
 
 import java.lang.reflect.ParameterizedType;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.anka.base.model.BaseModel;
+import com.anka.base.model.BaseResult;
+import com.anka.base.utils.BaseCode;
 
 public class BaseController<T extends BaseModel<T>> {
-	
+
 	private Class<T> modelClass;
-	
+
 	@SuppressWarnings("unchecked")
 	public BaseController() {
 		ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
-    	modelClass = (Class<T>) pt.getActualTypeArguments()[0];
+		modelClass = (Class<T>) pt.getActualTypeArguments()[0];
 	}
 
 	/**
@@ -46,5 +49,31 @@ public class BaseController<T extends BaseModel<T>> {
 			e.printStackTrace();
 		}
 		return path + view;
+	}
+
+	public BaseResult<T> success() {
+		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(BaseCode.SUCCESS.getMsg());
+	}
+
+	public BaseResult<T> success(Object data) {
+		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(BaseCode.SUCCESS.getMsg()).setData(data);
+	}
+
+	public BaseResult<T> success(String msg, Object data) {
+		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg()).setData(data);
+	}
+
+	public BaseResult<T> fail() {
+		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg());
+	}
+
+	public BaseResult<T> fail(T data) {
+		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg()).setData(data);
+	}
+
+	public BaseResult<T> fail(String msg, T data) {
+		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg()).setData(data);
 	}
 }
