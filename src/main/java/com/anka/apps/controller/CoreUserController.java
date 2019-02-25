@@ -3,8 +3,8 @@ package com.anka.apps.controller;
 import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
 import com.anka.base.controller.BaseController;
+import com.anka.base.model.BaseResult;
 import com.anka.base.utils.PassSecurity;
-import com.github.pagehelper.Page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -127,15 +127,10 @@ public class CoreUserController extends BaseController<CoreUser>{
 	}
     
     @PostMapping("/getList")
-	public @ResponseBody Map<String, Object> getList(CoreUser model){
-		Map<String, Object> map = new HashMap<String, Object>();
+    @ResponseBody
+	public BaseResult<CoreUser> getList(CoreUser model){
 		List<CoreUser> list = coreUserService.getList(model);
-		map.put("code", 0);
-		map.put("success", true);
-		map.put("msg", "");
-		map.put("data", list);
-		map.put("count",((Page) list).getTotal());
-		return map;
+		return super.success(list);
 	}
     
 }
