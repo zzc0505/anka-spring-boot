@@ -26,8 +26,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 			,"/postRegister"
 			,"/error"
 			,"/js/**"
-			,"/css/**"
 			,"/img/**"
+			,"/css/**"
 		});
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
