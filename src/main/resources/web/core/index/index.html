@@ -113,7 +113,7 @@
 				,$ = layui.jquery;
 				//锁屏初始化
 				$.post("${base}/core/user/lockChecked",{"crurUuid":"${user_info.crurUuid}"},function(res){
-					if(res.success){
+					if(res.code == "0"){
 						layer.open({
 							title:"已锁屏"
 							,content: '<input name="crurLockpassword" class="layui-input" type="text" placeholder="请输入解锁密码" autocomplete="off"/>'
@@ -126,12 +126,14 @@
 									$.post("${base}/core/user/unLocked",
 									{"crurUuid":"${user_info.crurUuid}","crurLockpassword":crurLockpassword},
 									function(result){
-										if(result.success){
+										if(result.code == 0){
 											layer.close(index);
+										}else{
+											layer.title(result.msg, index);
 										}
 									});
 								}else{
-									layer.title("密码不正确！", index);
+									layer.title("密码不能为空！", index);
 								}
 							}
 							,cancel: function(){ 
@@ -222,7 +224,7 @@
 									$.post("${base}/core/user/locked",
 									{"crurUuid":"${user_info.crurUuid}","crurLockpassword":crurLockpassword},
 									function(res){
-										if(res.success){
+										if(res.code == 0){
 											layer.close(ind);
 											layer.open({
 												title:"已锁屏"
@@ -236,12 +238,14 @@
 														$.post("${base}/core/user/unLocked",
 														{"crurUuid":"${user_info.crurUuid}","crurLockpassword":crurLockpassword},
 														function(result){
-															if(result.success){
+															if(result.code == 0){
 																layer.close(index);
+															}else{
+																layer.title(result.msg, index);
 															}
 														});
 													}else{
-														layer.title("密码不正确！", index);
+														layer.title("密码不能为空！", index);
 													}
 												}
 												,cancel: function(){ 

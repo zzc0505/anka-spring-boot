@@ -8,8 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import com.anka.base.excepiton.BusinessException;
 import com.anka.base.mapper.CrudBaseMapper;
 import com.anka.base.model.BaseModel;
+import com.anka.base.utils.BaseCode;
 
 import tk.mybatis.mapper.entity.Example;
 
@@ -30,6 +32,11 @@ public abstract class CrudBaseServiceSupport<T extends BaseModel<T>> implements 
 		Integer count = null;
 		SqlSession session = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
 		List<Object> list = model.getObjList();
+		if(list == null || list.size() == 0){
+			BaseCode baseCode = BaseCode.SERVER_ERROR;
+			baseCode.setMsg("批量保存时，model属性objList不能为空！");
+			throw new BusinessException(baseCode);
+		}
 		try {
 			for (Object object : list) {
 				count = session.insert(model.getClass().getName().replace("model", "mapper")+"Mapper.insertSelective", object);
@@ -52,6 +59,11 @@ public abstract class CrudBaseServiceSupport<T extends BaseModel<T>> implements 
 
 	@Override
 	public Integer batchDelete(T model) {
+		if(model.getStrList()==null || model.getStrList().size() == 0){
+			BaseCode baseCode = BaseCode.SERVER_ERROR;
+			baseCode.setMsg("批量删除时，model属性strList不能为空！");
+			throw new BusinessException(baseCode);
+		}
 		String ids = StringUtils.collectionToCommaDelimitedString(model.getStrList());
 		return mapper.deleteByIds(ids);
 	}
@@ -66,6 +78,11 @@ public abstract class CrudBaseServiceSupport<T extends BaseModel<T>> implements 
 		Integer count = null;
 		SqlSession session = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
 		List<Object> list = model.getObjList();
+		if(list == null || list.size() == 0){
+			BaseCode baseCode = BaseCode.SERVER_ERROR;
+			baseCode.setMsg("批量更新时，model属性objList不能为空！");
+			throw new BusinessException(baseCode);
+		}
 		try {
 			for (Object object : list) {
 				count = session.insert(model.getClass().getName().replace("model", "mapper")+"Mapper.updateByPrimaryKeySelective", object);
@@ -93,6 +110,11 @@ public abstract class CrudBaseServiceSupport<T extends BaseModel<T>> implements 
 
 	@Override
 	public List<T> selectModelListByIds(T model) {
+		if(model.getStrList()==null || model.getStrList().size() == 0){
+			BaseCode baseCode = BaseCode.SERVER_ERROR;
+			baseCode.setMsg("更具ids批量查询时，model属性strList不能为空！");
+			throw new BusinessException(baseCode);
+		}
 		String ids = StringUtils.collectionToCommaDelimitedString(model.getStrList());
 		return mapper.selectByIds(ids);
 	}

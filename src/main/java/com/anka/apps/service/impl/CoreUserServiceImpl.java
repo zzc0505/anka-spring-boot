@@ -103,7 +103,8 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 			cn.andLike("crurEmail",  "%"+model.getCrurEmail()+"%");
 		}
 		PageHelper.startPage(model.getPage(), model.getLimit());
-		return super.selectByExample(e);
+		List<CoreUser> list = super.selectByExample(e);
+		return list;
 	}
 	
 }

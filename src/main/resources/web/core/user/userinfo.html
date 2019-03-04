@@ -71,26 +71,23 @@
 				,$ = layui.jquery;
 				//表单赋值
 				form.val("userinfo", {
-					"crurName": "${userInfo.crurName}"
-					,"crurMobile": "${userInfo.crurMobile}"
-					,"crurEmail": "${userInfo.crurEmail!''}"
-					,"crurSex": "${userInfo.crurSex!''}"
-					,"crurPost": "${userInfo.crurPost!''}"
-					,"crurRemarkers": "${userInfo.crurRemarkers!''}"
-					,"crurUuid": "${userInfo.crurUuid!''}"
+					"crurName": "${data.crurName}"
+					,"crurMobile": "${data.crurMobile}"
+					,"crurEmail": "${data.crurEmail!''}"
+					,"crurSex": "${data.crurSex!''}"
+					,"crurPost": "${data.crurPost!''}"
+					,"crurRemarkers": "${data.crurRemarkers!''}"
+					,"crurUuid": "${data.crurUuid!''}"
 				});
 				
 				//监控表单提交
 				form.on('submit(change)', function(data){
 					var obj = data.field;
 					$.post("${base}/core/user/userInfoChange",obj,function(res){
-						if(res.success){
+						if(res.code == 0){
 							layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
 								parent.layer.closeAll();
 							});
-						}else{
-							layer.msg(res.msg, {icon: 5});
-							return false;
 						}
 					});
 				});

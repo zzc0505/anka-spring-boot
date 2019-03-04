@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.anka.base.model.BaseModel;
 import com.anka.base.model.BaseResult;
@@ -55,6 +56,10 @@ public class BaseController<T extends BaseModel<T>> {
 		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(BaseCode.SUCCESS.getMsg());
 	}
 
+	public BaseResult<T> success(String msg) {
+		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
+	}
+	
 	public BaseResult<T> success(Object data) {
 		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(BaseCode.SUCCESS.getMsg()).setData(data);
 	}
@@ -63,17 +68,57 @@ public class BaseController<T extends BaseModel<T>> {
 		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode())
 				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg()).setData(data);
 	}
+	
+	public ModelAndView success(Object data,String uri) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("data",data);
+		mv.addObject("code",BaseCode.SUCCESS.getCode());
+		mv.addObject("msg",BaseCode.SUCCESS.getMsg());
+		mv.setViewName(uri);
+		return mv;
+	}
 
+	public ModelAndView success(Object data, String uri, String msg) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("data",data);
+		mv.addObject("code",BaseCode.SUCCESS.getCode());
+		mv.addObject("msg",StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
+		mv.setViewName(uri);
+		return mv;
+	}
+	
 	public BaseResult<T> fail() {
 		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg());
 	}
 
-	public BaseResult<T> fail(T data) {
+	public BaseResult<T> fail(String msg) {
+		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
+	}
+	
+	public BaseResult<T> fail(Object data) {
 		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg()).setData(data);
 	}
 
-	public BaseResult<T> fail(String msg, T data) {
+	public BaseResult<T> fail(String msg, Object data) {
 		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode())
 				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg()).setData(data);
+	}
+	
+	public ModelAndView fail(Object data,String uri) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("data",data);
+		mv.addObject("code",BaseCode.FAILL.getCode());
+		mv.addObject("msg",BaseCode.FAILL.getMsg());
+		mv.setViewName(uri);
+		return mv;
+	}
+
+	public ModelAndView fail(Object data, String uri, String msg) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("data",data);
+		mv.addObject("code",BaseCode.FAILL.getCode());
+		mv.addObject("msg",StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
+		mv.setViewName(uri);
+		return mv;
 	}
 }

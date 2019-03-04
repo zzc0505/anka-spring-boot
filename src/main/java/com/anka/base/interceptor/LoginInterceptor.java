@@ -26,6 +26,10 @@ public class LoginInterceptor implements HandlerInterceptor{
 			 //用户为空，重新登录
 			response.sendRedirect(request.getContextPath()+"/login");
             return false;
+		}else if(request.getRequestURI().equals("/")){
+			//访问根路径，返回登陆页面
+			response.sendRedirect(request.getContextPath()+"/login");
+            return false;
 		}
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}	
