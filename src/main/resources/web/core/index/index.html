@@ -33,6 +33,12 @@
 					<li class="layui-nav-item">
 						<a href="javascript:;" class="refresh" title="刷新当前"><i class="layui-icon layui-icon-refresh-3"></i></a>
 					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;" class="layui-this" lay-href="BDCD88C49332445085EDC4519A111E92"><i class="layui-icon layui-icon-password"></i>顶部菜单一</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;" lay-href="ADCD88C49332445085EDC4519A111E92"><i class="layui-icon layui-icon-password"></i>顶部菜单二</a>
+					</li>
 				</ul>
 				<!--头部右侧导航-->
 				<ul class="layui-nav layui-layout-right" lay-filter="rightmenu">
@@ -50,7 +56,7 @@
 						</dl>
 					</li>
 					<li class="layui-nav-item">
-						<a href="javascript:;">锁屏<i class="layui-icon layui-icon-password"></i></a>
+						<a href="javascript:;"><i class="layui-icon layui-icon-password"></i>锁屏</a>
 					</li>
 					<li class="layui-nav-item"><a href="${base}/loginOut">退出</a></li>
 				</ul>
@@ -60,28 +66,38 @@
 				<!--带滚动条垂直导航-->
 				<div class="layui-side-scroll layui-bg-black">
 					<div class="layui-logo">后台管理系统</div>
-					<ul class="layui-nav layui-nav-tree" lay-filter="navtree">
-						<!--默认展开-->
-						<li class="layui-nav-item layui-nav-itemed">
-							<a href="javascript:;" title="主页"><i class="layui-icon layui-icon-home"></i><cite>主页</cite></a>
-							<dl class="layui-nav-child">
-								<dd><a href="javascript:;">列表一</a></dd>
-								<dd><a href="javascript:;">列表二</a></dd>
-								<dd><a href="javascript:;">列表三</a></dd>
-							</dl>
-						</li>
-						<li class="layui-nav-item">
-							<a href="javascript:;" title="用户"><i class="layui-icon layui-icon-user"></i><cite>用户</cite></a>
-							<dl class="layui-nav-child">
-								<dd><a href="javascript:;" lay-href="${base}/core/user/userlist">角色管理</a></dd>
-							</dl>
-						</li>
-						<li class="layui-nav-item">
-							<a href="javascript:;" title="设置"><i class="layui-icon layui-icon-set"></i><cite>设置</cite></a>
-							<dl class="layui-nav-child">
-								<dd><a href="javascript:;" lay-href="${base}/set">系统设置</a></dd>
-							</dl>
-						</li>
+					<ul class="layui-nav layui-nav-tree" lay-filter="navtree"  lay-shrink="all">
+						<div class="layui-show" uuid="BDCD88C49332445085EDC4519A111E92">
+							<!--默认展开-->
+							<li class="layui-nav-item layui-nav-itemed">
+								<a href="javascript:;" title="主页"><i class="layui-icon layui-icon-home"></i><cite>主页</cite></a>
+								<dl class="layui-nav-child">
+									<dd><a href="javascript:;">列表一</a></dd>
+									<dd><a href="javascript:;">列表二</a></dd>
+									<dd><a href="javascript:;">列表三</a></dd>
+								</dl>
+							</li>
+							<li class="layui-nav-item">
+								<a href="javascript:;" title="用户"><i class="layui-icon layui-icon-user"></i><cite>用户</cite></a>
+								<dl class="layui-nav-child">
+									<dd><a href="javascript:;" lay-href="${base}/core/user/userlist">角色管理</a></dd>
+								</dl>
+							</li>
+							<li class="layui-nav-item">
+								<a href="javascript:;" title="设置"><i class="layui-icon layui-icon-set"></i><cite>设置</cite></a>
+								<dl class="layui-nav-child">
+									<dd><a href="javascript:;" lay-href="${base}/set">系统设置</a></dd>
+								</dl>
+							</li>
+						</div>
+						<div class="layui-hide" uuid="ADCD88C49332445085EDC4519A111E92">
+							<li class="layui-nav-item layui-nav-itemed">
+								<a href="javascript:;" title="菜单"><i class="layui-icon layui-icon-set"></i><cite>菜单</cite></a>
+								<dl class="layui-nav-child">
+									<dd><a href="javascript:;" lay-href="">菜单一</a></dd>
+								</dl>
+							</li>
+						</div>
 					</ul>
 				</div>
 			</div>
@@ -187,6 +203,15 @@
 						$(".layui-show .layui-admin-iframe").attr("src", $(".layui-show .layui-admin-iframe").attr("src"));
 					}else if(elem[0].className=="backindex"){
 						window.location.href="${base}/index";
+					}else{//动态生成的菜单
+						var url = $(this).attr("lay-href");
+						$(".layui-nav-tree").find("div").each(function(em,ind){
+							if($(this).attr("uuid")==url){
+								$(this).attr("class","layui-show");
+							}else{
+								$(this).attr("class","layui-hide");
+							}
+						});
 					}
 				});
 				//顶部右侧菜单监控
