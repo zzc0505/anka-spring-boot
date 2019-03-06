@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<#include "/core/include/include.ftl" />
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="${base}/js/layui/css/layui.css" />
+		<style>
+			.layui-admin-card-header{
+				padding: 15px;
+			}
+			.layui-admin-card-body{
+				height: 500px;
+			}
+		</style>
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-fluid">
+			<div class="layui-card">
+				<div class="table-search layui-card-header layui-admin-card-header">
+					<button class="layui-btn" data-type="add">添加</button>
+					<button class="layui-btn" data-type="del">删除</button>
+					<div class="layui-inline">
+						<label class="layui-form-label">搜索</label>
+						<div class="layui-input-block">
+							<input name="crreName" id="crreName" class="layui-input" type="text" placeholder="角色名" autocomplete="off"/>
+						</div>
+					</div>
+					<button class="layui-btn" data-type="search">搜索</button>
+					<button class="layui-btn" data-type="remove">清除</button>
+				</div>
+				<div class="layui-card-body layui-admin-card-body">
+				    <table class="layui-hide" id="datatable"></table>
+				</div>
+			</div>
+		</div>
+		<script src="${base}/js/layui/layui.js"></script>
+		<script>
+			layui.use(['element','layer','table'],function(){
+				var element = layui.element
+				,layer = layui.layer
+				,table = layui.table;
+				
+				table.render({
+				    elem: '#datatable'
+				    ,height: 480
+				    ,method: 'post'
+				    ,url:'${base}/core/role/getList' //数据接口
+				    ,id:'datatable'
+				    ,page: true
+				    ,cols: [[
+      					{type: 'checkbox'}
+      					,{type:'numbers',title: '序号'}
+				   		,{field:'crreUuid', title: 'UUID', hide:true}
+				      	,{field:'crreName', title: '角色名',align:'center'}
+				      	,{field:'crreKey', title: '唯一标识',align:'center'}
+				      	,{field:'crreNote',  title: '角色说明',align:'center'}
+				      	,{field:'crreStatus', title: '状态',align:'center', sort: true,templet: function(d){
+				      		if(d.crreStatus=="0"){
+				      			return '启用';
+				      		}else if(d.crreStatus=="1"){
+				      			return '禁用';
+				      		}
+					     }}
+				      	,{field:'crreOrd',title: '排序',align:'center', sort: true}
+				    ]]
+				});
+				//定义查询动作
+				var $ = layui.$, active = {
+					add: function(){
+						var url = "${base}/core/role/roleedit?strMap.CMD=add";
+						layer.open({
+							title:"添加角色",
+							type: 2,
+							content:url,
+							area: ['400px', '400px']
+						});
+					}
+					,del: function(){
+						var data = table.checkStatus('datatable').data;
+						alert(JSON.stringify(data));
+						alert(data.length);
+						var strList = new Array();
+						$.each(data,function(i,e){
+							strList.push(e.crreUuid);
+						});
+						alert(strList.join(","));
+						$.post("${base}/core/role/batchDelete",{"strList":strList.join(",")},function(res){
+							if(res.code == 0){
+								layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
+									table.reload('datatable',{});
+								});
+							}
+						});
+					}
+					,search: function(){
+				    	//执行重载
+				      	table.reload('datatable', {
+				      		page: {
+					          	curr: 1 //重新从第 1 页开始
+					        }
+					        ,where: {
+					        	crreName: $('#crreName').val()
+					        }
+				      	});
+				    }
+				    ,remove: function(){
+				    	$('#crreName').val("");
+				    	//执行重载
+				      	table.reload('datatable', {
+					        page: {
+					          	curr: 1 //重新从第 1 页开始
+					        }
+					        ,where: {
+					        	crreName: ""
+					        }
+				    	});
+				    }
+				};
+				//绑定按钮
+				$('.table-search .layui-btn').on('click', function(){
+				    var type = $(this).data('type');
+				    active[type] ? active[type].call(this) : '';
+				});
+			});
+		</script>
+	</body>
+</html>

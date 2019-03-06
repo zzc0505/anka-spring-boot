@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreRoleMapper">
+	<resultMap type="CoreRole" id="fieldMapper">
+		<id property="crreUuid" column="CRRE_UUID" jdbcType="VARCHAR"/><!--UUID-->
+		<result property="crreName" column="CRRE_NAME" jdbcType="VARCHAR"/><!--角色名-->
+		<result property="crreKey" column="CRRE_KEY" jdbcType="VARCHAR"/><!--唯一标识-->
+		<result property="crreNote" column="CRRE_NOTE" jdbcType="VARCHAR"/><!--角色说明-->
+		<result property="crreStatus" column="CRRE_STATUS" jdbcType="VARCHAR"/><!--状态-->
+		<result property="crreCdate" column="CRRE_CDATE" jdbcType="TIMESTAMP"/><!--创建时间-->
+		<result property="crreUdate" column="CRRE_UDATE" jdbcType="TIMESTAMP"/><!--修改时间-->
+		<result property="crreOrd" column="CRRE_ORD" jdbcType="INTEGER"/><!--排序号-->
+	</resultMap>
+	
+	<sql id="field">
+		CRRE_UUID,
+		CRRE_NAME,
+		CRRE_KEY,
+		CRRE_NOTE,
+		CRRE_STATUS,
+		CRRE_CDATE,
+		CRRE_UDATE,
+		CRRE_ORD
+	</sql>
+	
+</mapper>
