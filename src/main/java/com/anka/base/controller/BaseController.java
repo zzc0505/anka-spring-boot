@@ -1,6 +1,10 @@
 package com.anka.base.controller;
 
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +17,6 @@ import com.anka.base.utils.BaseCode;
 
 public class BaseController<T extends BaseModel<T>> {
 
-	private Class<T> modelClass;
-
-	@SuppressWarnings("unchecked")
-	public BaseController() {
-		ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
-		modelClass = (Class<T>) pt.getActualTypeArguments()[0];
-	}
-
 	/**
 	 * @Description: 通用页面跳转
 	 * @author AnkaRebirth
@@ -28,28 +24,51 @@ public class BaseController<T extends BaseModel<T>> {
 	 * @return
 	 */
 	@RequestMapping("/{view}")
-	public String getView(@PathVariable String view) {
+	public ModelAndView getView(@PathVariable String view, T baseModel, HttpServletRequest request) {
 		String path = "";
-		try {
-			T model = modelClass.newInstance();
-			try {
-				Class<?> clazz = Class
-						.forName(model.getClass().getName().replace("model", "controller") + "Controller");
-				boolean present = clazz.isAnnotationPresent(RequestMapping.class);
-				if (present) {
-					RequestMapping annotation = clazz.getAnnotation(RequestMapping.class);
-					String[] value = annotation.value();
-					path = value[0] + "/";
+		Map<String, String[]> map = request.getParameterMap();
+		Field[] filed = baseModel.getClass().getDeclaredFields();
+		ModelAndView mv = new ModelAndView();
+		for (Field f : filed) {
+			f.setAccessible(true);
+			for (Map.Entry<String, String[]> entry : map.entrySet()) {
+				if (f.getName().equals(entry.getKey())) {
+					mv.addObject(entry.getKey(), entry.getValue()[0]);
 				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			}
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		}
+		if (baseModel.getClass().getSuperclass() != null) {
+			filed = baseModel.getClass().getSuperclass().getDeclaredFields();
+			for (Field f : filed) {
+				for (Map.Entry<String, String[]> entry : map.entrySet()) {
+					if (entry.getKey().startsWith("str")) {
+						if (entry.getKey().startsWith(f.getName()) && entry.getKey().indexOf(".") != -1) {
+							Map<String, Object> m = new HashMap<String, Object>();
+							m.put(entry.getKey().substring(entry.getKey().indexOf(".") + 1, entry.getKey().length()),
+									entry.getValue()[0]);
+							mv.addObject(f.getName(), m);
+						}
+						if (f.getName().equals(entry.getKey())) {
+							mv.addObject(entry.getKey(), entry.getValue()[0]);
+						}
+					}
+				}
+			}
+		}
+		try {
+			Class<?> clazz = Class
+					.forName(baseModel.getClass().getName().replace("model", "controller") + "Controller");
+			boolean present = clazz.isAnnotationPresent(RequestMapping.class);
+			if (present) {
+				RequestMapping annotation = clazz.getAnnotation(RequestMapping.class);
+				String[] value = annotation.value();
+				path = value[0] + "/";
+			}
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return path + view;
+		mv.setViewName(path + view);
+		return mv;
 	}
 
 	public BaseResult<T> success() {
@@ -57,9 +76,10 @@ public class BaseController<T extends BaseModel<T>> {
 	}
 
 	public BaseResult<T> success(String msg) {
-		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
+		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
 	}
-	
+
 	public BaseResult<T> success(Object data) {
 		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(BaseCode.SUCCESS.getMsg()).setData(data);
 	}
@@ -68,33 +88,34 @@ public class BaseController<T extends BaseModel<T>> {
 		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode())
 				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg()).setData(data);
 	}
-	
-	public ModelAndView success(Object data,String uri) {
+
+	public ModelAndView success(Object data, String uri) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("data",data);
-		mv.addObject("code",BaseCode.SUCCESS.getCode());
-		mv.addObject("msg",BaseCode.SUCCESS.getMsg());
+		mv.addObject("data", data);
+		mv.addObject("code", BaseCode.SUCCESS.getCode());
+		mv.addObject("msg", BaseCode.SUCCESS.getMsg());
 		mv.setViewName(uri);
 		return mv;
 	}
 
 	public ModelAndView success(Object data, String uri, String msg) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("data",data);
-		mv.addObject("code",BaseCode.SUCCESS.getCode());
-		mv.addObject("msg",StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
+		mv.addObject("data", data);
+		mv.addObject("code", BaseCode.SUCCESS.getCode());
+		mv.addObject("msg", StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
 		mv.setViewName(uri);
 		return mv;
 	}
-	
+
 	public BaseResult<T> fail() {
 		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg());
 	}
 
 	public BaseResult<T> fail(String msg) {
-		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
+		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
 	}
-	
+
 	public BaseResult<T> fail(Object data) {
 		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg()).setData(data);
 	}
@@ -103,21 +124,21 @@ public class BaseController<T extends BaseModel<T>> {
 		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode())
 				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg()).setData(data);
 	}
-	
-	public ModelAndView fail(Object data,String uri) {
+
+	public ModelAndView fail(Object data, String uri) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("data",data);
-		mv.addObject("code",BaseCode.FAILL.getCode());
-		mv.addObject("msg",BaseCode.FAILL.getMsg());
+		mv.addObject("data", data);
+		mv.addObject("code", BaseCode.FAILL.getCode());
+		mv.addObject("msg", BaseCode.FAILL.getMsg());
 		mv.setViewName(uri);
 		return mv;
 	}
 
 	public ModelAndView fail(Object data, String uri, String msg) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("data",data);
-		mv.addObject("code",BaseCode.FAILL.getCode());
-		mv.addObject("msg",StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
+		mv.addObject("data", data);
+		mv.addObject("code", BaseCode.FAILL.getCode());
+		mv.addObject("msg", StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
 		mv.setViewName(uri);
 		return mv;
 	}
