@@ -23,6 +23,16 @@
 		<result property="crurUdate" column="CRUR_UDATE" jdbcType="TIMESTAMP"/><!--修改时间-->
 		<result property="crurRemarkers" column="CRUR_REMARKERS" jdbcType="VARCHAR"/><!--备注-->
 		<result property="crurLockstatus" column="CRUR_LOCKSTATUS" jdbcType="VARCHAR"/><!--锁屏状态 0未锁1已锁-->
+		<collection property="coreRole" ofType="com.anka.apps.model.CoreRole" javaType="java.util.LinkedHashSet">
+			<id property="crreUuid" column="CRRE_UUID" jdbcType="VARCHAR"/><!--UUID-->
+			<result property="crreName" column="CRRE_NAME" jdbcType="VARCHAR"/><!--角色名-->
+			<result property="crreKey" column="CRRE_KEY" jdbcType="VARCHAR"/><!--唯一标识-->
+			<result property="crreNote" column="CRRE_NOTE" jdbcType="VARCHAR"/><!--角色说明-->
+			<result property="crreStatus" column="CRRE_STATUS" jdbcType="VARCHAR"/><!--状态-->
+			<result property="crreCdate" column="CRRE_CDATE" jdbcType="TIMESTAMP"/><!--创建时间-->
+			<result property="crreUdate" column="CRRE_UDATE" jdbcType="TIMESTAMP"/><!--修改时间-->
+			<result property="crreOrd" column="CRRE_ORD" jdbcType="INTEGER"/><!--排序号-->
+		</collection>
 	</resultMap>
 	
 	<sql id="field">
@@ -49,4 +59,44 @@
 		CRUR_LOCKSTATUS
 	</sql>
 	
+	<sql id="fieldExp">
+		CRUR_UUID,
+		CRUR_NAME,
+		CRUR_PASSWORD,
+		CRUR_SEX,
+		CRUR_MOBILE,
+		CRUR_TEL,
+		CRUR_EMAIL,
+		CRUR_POST,
+		CRUR_CROR_UUID,
+		CRUR_CROR_NAME,
+		CRUR_LOGTYPE,
+		CRUR_STATUS,
+		CRUR_ORD,
+		CRUR_LOCKPASSWORD,
+		CRUR_NATURE,
+		CRUR_PINYIN,
+		CRUR_PASSWORDEXPTIME,
+		CRUR_CDATE,
+		CRUR_UDATE,
+		CRUR_REMARKERS,
+		CRUR_LOCKSTATUS,
+		CRRE_UUID,
+		CRRE_NAME,
+		CRRE_KEY,
+		CRRE_NOTE,
+		CRRE_STATUS,
+		CRRE_CDATE,
+		CRRE_UDATE,
+		CRRE_ORD
+	</sql>
+	
+	<select id="getCoreUser" resultMap="fieldMapper" parameterType="CoreUser">
+		SELECT 
+		<include refid="fieldExp" /> 
+		FROM CORE_USER 
+		JOIN CORE_USER_ROLE ON CRUR_UUID = CRUE_CRUR_UUID
+		JOIN CORE_ROLE ON CRRE_UUID = CRUE_CRRE_UUID
+		WHERE CRUR_UUID = #{crurUuid}
+	</select>
 </mapper>

@@ -11,4 +11,10 @@ import com.anka.apps.model.CoreUser;
  */
 public interface CoreUserMapper extends CrudBaseMapper<CoreUser>{
 	
+	/**
+	 * 获取用户（包含用户由拥有的角色）
+	 * @param model
+	 * @return
+	 */
+	public CoreUser getCoreUser(CoreUser model);
 }

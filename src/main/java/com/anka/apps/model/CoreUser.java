@@ -1,10 +1,13 @@
 package com.anka.apps.model;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.anka.base.model.BaseModel;
 
@@ -59,7 +62,10 @@ public class CoreUser extends BaseModel<CoreUser> {
 	private String crurRemarkers;
 	/** 锁屏状态 0未锁1已锁 */
 	private String crurLockstatus;
-
+	/** 角色集合 */
+	@Transient
+	private Set<CoreRole> coreRole;
+	
 	public String getCrurUuid() {
 		return crurUuid;
 	}
@@ -186,7 +192,13 @@ public class CoreUser extends BaseModel<CoreUser> {
 	public void setCrurLockstatus(String crurLockstatus) {
 		this.crurLockstatus = crurLockstatus;
 	}
-
+	public Set<CoreRole> getCoreRole() {
+		return this.coreRole = this.coreRole == null? new LinkedHashSet<CoreRole>():this.coreRole;
+	}
+	public void setCoreRole(Set<CoreRole> coreRole) {
+		this.coreRole = coreRole;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer bf = new StringBuffer();

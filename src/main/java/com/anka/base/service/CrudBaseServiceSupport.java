@@ -118,7 +118,7 @@ public abstract class CrudBaseServiceSupport<T extends BaseModel<T>> implements 
 	public List<T> selectModelListByIds(T model) {
 		if(model.getStrList()==null || model.getStrList().size() == 0){
 			BaseCode baseCode = BaseCode.SERVER_ERROR;
-			baseCode.setMsg("更具ids批量查询时，model属性strList不能为空！");
+			baseCode.setMsg("根据ids批量查询时，model属性strList不能为空！");
 			throw new BusinessException(baseCode);
 		}
 		StringBuffer sb = new StringBuffer();

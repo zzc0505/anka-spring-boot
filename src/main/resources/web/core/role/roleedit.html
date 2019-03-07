@@ -16,13 +16,13 @@
 			<div class="layui-form layui-form-pane" lay-filter="roleedit">
 				<div class="layui-form-item"></div>
 				<div class="layui-form-item">
-					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 角色名</label>
+					<label class="layui-form-label"><i class="layui-icon layui-icon-user"></i> 角色名</label>
 					<div class="layui-input-block">
 						<input name="crreName" class="layui-input" type="text" placeholder="请输入角色名" autocomplete="off" lay-verify="required"/>
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label"><i class="layui-icon layui-icon-cellphone"></i> 唯一标识</label>
+					<label class="layui-form-label"><i class="layui-icon layui-icon-auz"></i> 唯一标识</label>
 					<div class="layui-input-block">
 						<input name="crreKey" class="layui-input" type="text" placeholder="请输入唯一标识" autocomplete="off" lay-verify="required"/>
 					</div>
@@ -34,17 +34,23 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-				    <label class="layui-form-label"><i class="layui-icon layui-icon-male"></i> 状态</label>
+				    <label class="layui-form-label"><i class="layui-icon layui-icon-ok"></i> 状态</label>
 				    <div class="layui-input-block">
 				      <input type="radio" name="crreStatus" value="0" title="启用" checked="checked"/>
 				      <input type="radio" name="crreStatus" value="1" title="禁用"/>
 				    </div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label"><i class="layui-icon layui-icon-auz"></i> 排序号</label>
+					<label class="layui-form-label"><i class="layui-icon layui-icon-form"></i> 排序号</label>
 					<div class="layui-input-block">
 						<input name="crreOrd" class="layui-input" type="text" placeholder="请输入排序号" autocomplete="off"/>
 					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+				    <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i>拥有者</label>
+				    <div class="layui-input-block">
+				    	<textarea name="strMap.user" id="user" placeholder="请输入内容" class="layui-textarea"></textarea>
+				    </div>
 				</div>
 				<div class="layui-form-item">
 					<div class="layui-btn-container">
@@ -56,6 +62,7 @@
 				<#if strMap??&&strMap.CMD!="add">
 				<input type="hidden" name="crreUuid">
 				</#if>
+				<input type="hidden" name="strList" id="strList">
 			</div>
 		</div>
 		<script src="${base}/js/layui/layui.js"></script>

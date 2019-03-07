@@ -106,5 +106,10 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 		List<CoreUser> list = super.selectByExample(e);
 		return list;
 	}
+
+	@Override
+	public CoreUser getCoreUser(CoreUser model) {
+		return coreUserMapper.getCoreUser(model);
+	}
 	
 }

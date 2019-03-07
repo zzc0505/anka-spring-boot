@@ -52,5 +52,11 @@ public interface CoreUserService extends CrudBaseService<CoreUser> {
 	 * @return
 	 */
 	public List<CoreUser> getList(CoreUser model);
+	/**
+	 * 获取用户（包含用户由拥有的角色）
+	 * @param model
+	 * @return
+	 */
+	public CoreUser getCoreUser(CoreUser model);
 	
 }

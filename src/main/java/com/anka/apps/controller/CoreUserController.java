@@ -58,7 +58,7 @@ public class CoreUserController extends BaseController<CoreUser>{
     
     @RequestMapping("/userInfo")
     public ModelAndView userInfo(CoreUser model){
-    	model = coreUserService.get(model.getCrurUuid());
+    	model = coreUserService.getCoreUser(model);
     	model.setCrurPassword("");
     	return super.success(model,"core/user/userinfo");
     }
