@@ -69,12 +69,7 @@
 				var $ = layui.$, active = {
 					add: function(){
 						var url = "${base}/core/role/roleedit?strMap.CMD=add";
-						layer.open({
-							title:"添加角色",
-							type: 2,
-							content:url,
-							area: ['400px', '550px']
-						});
+						window.location.href= url;
 					}
 					,del: function(){
 						var data = table.checkStatus('datatable').data;
