@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import com.anka.base.annotation.FCMD;
+import com.anka.base.annotation.FCMD.CMM;
 import com.anka.base.model.BaseModel;
 
 /**
@@ -20,9 +20,10 @@ public class CoreUser extends BaseModel<CoreUser> {
 
 	/** uuid */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "SELECT UPPER(REPLACE(UUID(),'-',''))")
+	@FCMD(fieldName="crurUuid",type=CMM.UUID)
 	private String crurUuid;
 	/** 用户名 */
+	@FCMD(fieldName="crurName",type=CMM.TEXT)
 	private String crurName;
 	/** 用户密码  */
 	private String crurPassword;
@@ -55,8 +56,10 @@ public class CoreUser extends BaseModel<CoreUser> {
 	/** 密码过期时间 */
 	private Date crurPasswordexptime;
 	/** 创建时间 */
+	@FCMD(fieldName="crurCdate",type=CMM.CDATE)
 	private Date crurCdate;
 	/** 修改时间 */
+	@FCMD(fieldName="crurUdate",type=CMM.UDATE)
 	private Date crurUdate;
 	/** 备注 */
 	private String crurRemarkers;

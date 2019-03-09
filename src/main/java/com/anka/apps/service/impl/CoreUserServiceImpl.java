@@ -55,8 +55,6 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 	public void userRegister(CoreUser model) {
 		model.setCrurPassword(PassSecurity.getEncode(model.getCrurPassword(), "ANKA"));
 		model.setCrurStatus("0");
-		model.setCrurCdate(new Date());
-		model.setCrurUdate(new Date());
 		model.setCrurLockstatus("0");
 		super.save(model);
 	}
