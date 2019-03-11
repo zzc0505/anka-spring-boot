@@ -22,6 +22,10 @@ public class MethodAspect {
 	public void doSave() {
 	};
 
+	@Pointcut("execution(* com.anka.base.mapper.CrudBaseMapper.update*(*))")
+	public void doUpdate() {
+	};
+	
 	@SuppressWarnings("static-access")
 	@Before("doSave()")
 	public void beforeDoSave(JoinPoint joinPoint) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -56,6 +60,31 @@ public class MethodAspect {
 					if (val == null) {
 						Method setMethod = getMd(args, filedName, "set", Date.class);
 						setMethod.invoke(args, new Date());
+					}
+				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("static-access")
+	@Before("doUpdate()")
+	public void beforeDoUpdate(JoinPoint joinPoint){
+		Object args = joinPoint.getArgs()[0];
+		Field[] fields = args.getClass().getDeclaredFields();
+		for (Field f : fields) {
+			FCMD fCmd = f.getAnnotation(FCMD.class);
+			if (fCmd != null&&StringUtils.hasText(fCmd.fieldName())) {
+				String filedName = fCmd.fieldName();
+				if(fCmd.type()==fCmd.type().UDATE){
+					Method setMethod = getMd(args, filedName, "set", Date.class);
+					try {
+						setMethod.invoke(args, new Date());
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
 					}
 				}
 			}
