@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 public class GetTablesData {
 
 	public static List<Map<String, Object>> getTablesData(String tableName, DatabaseMetaData data,
 			String BASE_PACKAGE, String SERVICE_PACKAGE, String SERVICE_IMPL_PACKAGE, String MODEL_PACKAGE,
-			String DAO_PACKAGE, String CONTROLLER_PACKAGE) throws SQLException {
+			String DAO_PACKAGE, String CONTROLLER_PACKAGE, String DATA_TYPE) throws SQLException {
 		System.out.println(data.getDriverName());
 		System.out.println(data.getURL());
 		System.out.println(data.getUserName());
@@ -42,7 +43,7 @@ public class GetTablesData {
 			System.out.println("表备注：" + rs.getString("REMARKS"));
 			Map<String, Object> map = getDateMap(rs.getString("TABLE_NAME").toUpperCase(), rs.getString("REMARKS"),
 					data, BASE_PACKAGE, SERVICE_PACKAGE, SERVICE_IMPL_PACKAGE, MODEL_PACKAGE,
-					DAO_PACKAGE, CONTROLLER_PACKAGE);
+					DAO_PACKAGE, CONTROLLER_PACKAGE, DATA_TYPE);
 			list.add(map);
 		}
 		rs.close();
@@ -63,11 +64,12 @@ public class GetTablesData {
 	 */
 	private static Map<String, Object> getDateMap(String tableName, String reMarks, DatabaseMetaData data,
 			String BASE_PACKAGE, String SERVICE_PACKAGE, String SERVICE_IMPL_PACKAGE, String MODEL_PACKAGE,
-			String DAO_PACKAGE, String CONTROLLER_PACKAGE) throws SQLException {
+			String DAO_PACKAGE, String CONTROLLER_PACKAGE, String DATA_TYPE) throws SQLException {
 		Assert.hasText(tableName, "表名称不能为空！");
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		map.put("tableName", tableName);
+		map.put("dataType", StringUtils.hasText(DATA_TYPE)?DATA_TYPE:"comn");
 		map.put("claszName", GeneratorUtils.underlineCamel(tableName, false));
 		map.put("className", GeneratorUtils.underlineCamel(tableName, true));
 		map.put("reMarks", reMarks);

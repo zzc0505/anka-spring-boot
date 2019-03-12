@@ -21,7 +21,9 @@ public class AnkaGenerator {
 	private static final String PASS_WORD = "123456";
 
 	// 表名称，不限大小写，可包含单字符通配符("_"),或多字符通配符("%");
-	private static final String TALBE_NAME = "core_orginaze";
+	private static final String TALBE_NAME = "core_menu";
+	// 数据类型，comn 常用数据 tree 树形数据 ,如果为空默认 comn
+	private static final String DATA_TYPE = "tree";
 	// 项目基础包名称，根据自己公司的项目修改
 	private static final String BASE_PACKAGE = "com.anka.apps";
 	// Model所在包
@@ -52,7 +54,7 @@ public class AnkaGenerator {
 		System.out.println("");
 		List<Map<String, Object>> list = GetTablesData.getTablesData(TALBE_NAME,
 				data, BASE_PACKAGE, SERVICE_PACKAGE, SERVICE_IMPL_PACKAGE, MODEL_PACKAGE,
-				DAO_PACKAGE, CONTROLLER_PACKAGE);
+				DAO_PACKAGE, CONTROLLER_PACKAGE, DATA_TYPE);
 		GeneratorUtils.closeConnection(con);
 		System.out.println("生成表"+list.size()+"个！SUCCESS");
 		//==================================代码生成主体部分==================================
