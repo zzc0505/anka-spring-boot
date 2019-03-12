@@ -18,6 +18,6 @@ public @interface FCMD {
 	public CMM type();
 	
 	public enum CMM{
-		UUID,TEXT,CDATE,UDATE,ORDER;
+		UUID,TEXT,CDATE,UDATE,ORDER,STATUS;
 	}
 }
