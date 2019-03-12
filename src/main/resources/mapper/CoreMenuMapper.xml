@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreMenuMapper">
+	<resultMap type="CoreMenu" id="fieldMapper">
+		<id property="crmeUuid" column="CRME_UUID" jdbcType="VARCHAR"/><!--UUID-->
+		<result property="crmeParentUuid" column="CRME_PARENT_UUID" jdbcType="VARCHAR"/><!--父UUID-->
+		<result property="crmeName" column="CRME_NAME" jdbcType="VARCHAR"/><!--菜单名称-->
+		<result property="crmeUrl" column="CRME_URL" jdbcType="VARCHAR"/><!--菜单URL-->
+		<result property="crmeTarget" column="CRME_TARGET" jdbcType="VARCHAR"/><!--展示方式-->
+		<result property="crmeIcon" column="CRME_ICON" jdbcType="VARCHAR"/><!--图标CLASS-->
+		<result property="crmeType" column="CRME_TYPE" jdbcType="VARCHAR"/><!--菜单类型-->
+		<result property="crmeStatus" column="CRME_STATUS" jdbcType="VARCHAR"/><!--状态-->
+		<result property="crmeCdate" column="CRME_CDATE" jdbcType="TIMESTAMP"/><!--创建时间-->
+		<result property="crmeUdate" column="CRME_UDATE" jdbcType="TIMESTAMP"/><!--修改时间-->
+		<result property="crmeOrd" column="CRME_ORD" jdbcType="INTEGER"/><!--排序-->
+		<result property="crmeRemark" column="CRME_REMARK" jdbcType="VARCHAR"/><!--备注-->
+	</resultMap>
+	
+	<sql id="field">
+		CRME_UUID,
+		CRME_PARENT_UUID,
+		CRME_NAME,
+		CRME_URL,
+		CRME_TARGET,
+		CRME_ICON,
+		CRME_TYPE,
+		CRME_STATUS,
+		CRME_CDATE,
+		CRME_UDATE,
+		CRME_ORD,
+		CRME_REMARK
+	</sql>
+	
+</mapper>
