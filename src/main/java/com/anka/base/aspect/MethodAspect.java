@@ -3,9 +3,13 @@ package com.anka.base.aspect;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -88,35 +92,50 @@ public class MethodAspect {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "static-access" })
-	@Before("doSetData()")
-	public void beforeDoSetData(JoinPoint joinPoint) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		Object args = joinPoint.getArgs()[0];
-		Class<?> superClass = args.getClass().getSuperclass();
-		System.out.println(superClass.getSimpleName());
-		if(superClass!=null&&superClass.getSimpleName().equals("BaseTree")){
-			BaseTree tree = new BaseTree();
-			tree.setBasicData(args);
-			Field[] fields = args.getClass().getDeclaredFields();
-			for (Field f : fields) {
-				FCMD fCmd = f.getAnnotation(FCMD.class);
-				if(fCmd != null&&StringUtils.hasText(fCmd.fieldName())){
-					Method getMethod = getMd(args, fCmd.fieldName(), "get");
-					Object val = getMethod.invoke(args, new Object[] {});
-					if(fCmd.type()==fCmd.type().UUID){
-						tree.setId(String.valueOf(val));
-					}
-					if(fCmd.type()==fCmd.type().TEXT){
-						tree.setTitle(String.valueOf(val));;
-					}
-					if(fCmd.type()==fCmd.type().PID){
-						tree.setParentId(String.valueOf(val));
-					}
-					if(fCmd.type()==fCmd.type().ICON){
-						tree.setIconClass(String.valueOf(val));
+	@Around("doSetData()")
+	public void beforeDoSetData(ProceedingJoinPoint joinPoint) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		Object[] args = joinPoint.getArgs();
+		if(args[0] instanceof List){
+			List list = (List) args[0];
+			if(list.size()>0){
+				List<Object> datas = new ArrayList<Object>();
+				for (Object model : list) {
+					Class<?> superClass = model.getClass().getSuperclass();
+					System.out.println(superClass.getSimpleName());
+					if(superClass!=null&&superClass.getSimpleName().equals("BaseTree")){
+						BaseTree tree = new BaseTree();
+						tree.setBasicData(model);
+						Field[] fields = model.getClass().getDeclaredFields();
+						for (Field f : fields) {
+							FCMD fCmd = f.getAnnotation(FCMD.class);
+							if(fCmd != null&&StringUtils.hasText(fCmd.fieldName())){
+								Method getMethod = getMd(model, fCmd.fieldName(), "get");
+								Object val = getMethod.invoke(model, new Object[] {});
+								if(fCmd.type()==fCmd.type().UUID){
+									tree.setId(String.valueOf(val));
+								}
+								if(fCmd.type()==fCmd.type().TEXT){
+									tree.setTitle(String.valueOf(val));;
+								}
+								if(fCmd.type()==fCmd.type().PID){
+									tree.setParentId(String.valueOf(val));
+								}
+								if(fCmd.type()==fCmd.type().ICON){
+									tree.setIconClass(String.valueOf(val));
+								}
+							}
+						}
+						BeanUtils.copyProperties(tree, model);
+						datas.add(model);
 					}
 				}
+				args[0] = datas;
+				try {
+					joinPoint.proceed(args);
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
-			BeanUtils.copyProperties(tree, args);
 		}
 	}
 	
