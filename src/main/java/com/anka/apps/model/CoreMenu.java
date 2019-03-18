@@ -19,6 +19,7 @@ public class CoreMenu extends BaseTree<CoreMenu> {
 	@FCMD(fieldName="crmeUuid",type=CMM.UUID)
 	private String crmeUuid;
 	/** 父UUID */
+	@FCMD(fieldName="crmeParentUuid",type=CMM.PID)
 	private String crmeParentUuid;
 	/** 菜单名称 */
 	@FCMD(fieldName="crmeName",type=CMM.TEXT)
@@ -32,6 +33,7 @@ public class CoreMenu extends BaseTree<CoreMenu> {
 	/** 菜单类型 */
 	private String crmeType;
 	/** 状态 */
+	@FCMD(fieldName="crmeStatus",type=CMM.STATUS)
 	private String crmeStatus;
 	/** 创建时间 */
 	@FCMD(fieldName="crmeCdate",type=CMM.CDATE)
@@ -40,6 +42,7 @@ public class CoreMenu extends BaseTree<CoreMenu> {
 	@FCMD(fieldName="crmeUdate",type=CMM.UDATE)
 	private Date crmeUdate;
 	/** 排序 */
+	@FCMD(fieldName="crmeOrd",type=CMM.ORDER)
 	private Integer crmeOrd;
 	/** 备注 */
 	private String crmeRemark;
