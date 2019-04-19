@@ -91,7 +91,7 @@ public abstract class CrudBaseServiceSupport<T extends BaseModel<T>> implements 
 		}
 		try {
 			for (Object object : list) {
-				count = session.insert(model.getClass().getName().replace("model", "mapper")+"Mapper.updateByPrimaryKeySelective", object);
+				count = session.update(model.getClass().getName().replace("model", "mapper")+"Mapper.updateByPrimaryKeySelective", object);
 			}
 			session.commit();
 			session.clearCache();
