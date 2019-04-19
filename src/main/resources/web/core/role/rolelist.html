@@ -73,13 +73,10 @@
 					}
 					,del: function(){
 						var data = table.checkStatus('datatable').data;
-						alert(JSON.stringify(data));
-						alert(data.length);
 						var strList = new Array();
 						$.each(data,function(i,e){
 							strList.push(e.crreUuid);
 						});
-						alert(strList.join(","));
 						$.post("${base}/core/role/batchDelete",{"strList":strList.join(",")},function(res){
 							if(res.code == 0){
 								layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
