@@ -3,6 +3,7 @@ package com.anka.apps.service;
 import java.util.List;
 
 import com.anka.apps.model.CoreUser;
+import com.anka.base.model.BaseTree;
 import com.anka.base.service.CrudBaseService;
 
 /**
@@ -59,4 +60,8 @@ public interface CoreUserService extends CrudBaseService<CoreUser> {
 	 */
 	public CoreUser getCoreUser(CoreUser model);
 	
+	/**
+	 * 人员选择树
+	 */
+	public List<BaseTree> treeList(CoreUser model);
 }

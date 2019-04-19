@@ -4,6 +4,7 @@ import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
 import com.anka.base.controller.BaseController;
 import com.anka.base.model.BaseResult;
+import com.anka.base.model.BaseTree;
 import com.anka.base.utils.PassSecurity;
 
 import org.springframework.stereotype.Controller;
@@ -92,4 +93,10 @@ public class CoreUserController extends BaseController<CoreUser>{
 		return super.success(list);
 	}
     
+    @RequestMapping("/treeList")
+    @ResponseBody
+	public List<BaseTree> treeList(CoreUser model){
+    	List<BaseTree> list = coreUserService.treeList(model);
+		return list;
+	}
 }

@@ -47,7 +47,7 @@ public class CoreUser extends BaseModel<CoreUser> {
 	@FCMD(fieldName="crurStatus",type=CMM.STATUS)
 	private String crurStatus;
 	/** 排序号 */
-	@FCMD(fieldName="crurStatus",type=CMM.ORDER)
+	@FCMD(fieldName="crurOrd",type=CMM.ORDER)
 	private Integer crurOrd;
 	/** 锁屏密码 */
 	private String crurLockpassword;

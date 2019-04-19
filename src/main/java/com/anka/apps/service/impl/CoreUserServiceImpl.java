@@ -3,6 +3,7 @@ package com.anka.apps.service.impl;
 import com.anka.apps.mapper.CoreUserMapper;
 import com.anka.apps.model.CoreUser;
 import com.anka.apps.service.CoreUserService;
+import com.anka.base.model.BaseTree;
 import com.anka.base.service.CrudBaseServiceSupport;
 import com.anka.base.utils.PassSecurity;
 import com.github.pagehelper.PageHelper;
@@ -13,6 +14,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -109,5 +111,24 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 	public CoreUser getCoreUser(CoreUser model) {
 		return coreUserMapper.getCoreUser(model);
 	}
-	
+
+	@Override
+	public List<BaseTree> treeList(CoreUser model) {
+		List<BaseTree> treeList = new ArrayList<BaseTree>();
+		Example e = new Example(CoreUser.class);
+		Criteria cn = e.createCriteria();
+		if(StringUtils.hasText(model.getCrurName())){
+			cn.andLike("crurName", "%"+model.getCrurName()+"%");
+		}
+		List<CoreUser> list = super.selectByExample(e);
+		for (CoreUser user : list) {
+			BaseTree tree = new BaseTree();
+			tree.setId(user.getCrurUuid());
+			tree.setTitle(user.getCrurName());
+			tree.setCheckArr("0");
+			tree.setParentId("0");
+			treeList.add(tree);
+		}
+		return treeList;
+	}
 }
