@@ -2,9 +2,12 @@ package ${basePackageModel};
 
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+<#if columns??>
+import com.anka.base.annotation.FCMD;
+import com.anka.base.annotation.FCMD.CMM;
+</#if>
 <#if dataType=="comn">
 import com.anka.base.model.BaseModel;
 <#elseif dataType=="tree">
@@ -19,14 +22,22 @@ public class ${claszName} extends <#if dataType=="comn">BaseModel<${claszName}><
 
 <#if columns??>
 <#list columns as cols>
-	<#if cols_index==0>
 	/** ${cols.remarks!''} */
+	<#if cols_index==0&&cols.javaNameLo?last_index_of("Uuid")!=-1>
 	@Id
-	private ${cols.javaType} ${cols.javaNameLo};
-	<#else>
-	/** ${cols.remarks!''} */
-	private ${cols.javaType} ${cols.javaNameLo};
+	@FCMD(fieldName="${cols.javaNameLo}",type=CMM.UUID)
+	<#elseif cols.javaNameLo?last_index_of("Name")!=-1||cols.javaNameLo?last_index_of("Title")!=-1>
+	@FCMD(fieldName="${cols.javaNameLo}",type=CMM.TEXT)
+	<#elseif cols.javaNameLo?last_index_of("Status")!=-1>
+	@FCMD(fieldName="${cols.javaNameLo}",type=CMM.STATUS)
+	<#elseif cols.javaNameLo?last_index_of("Ord")!=-1>
+	@FCMD(fieldName="${cols.javaNameLo}",type=CMM.ORDER)
+	<#elseif cols.javaNameLo?last_index_of("Cdate")!=-1>
+	@FCMD(fieldName="${cols.javaNameLo}",type=CMM.CDATE)
+	<#elseif cols.javaNameLo?last_index_of("Udate")!=-1>
+	@FCMD(fieldName="${cols.javaNameLo}",type=CMM.UDATE)
 	</#if>
+	private ${cols.javaType} ${cols.javaNameLo};
 </#list>
 </#if>
 
