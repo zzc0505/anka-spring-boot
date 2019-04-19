@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreRoleUserMapper">
+	<resultMap type="CoreRoleUser" id="fieldMapper">
+		<id property="crueUuid" column="CRUE_UUID" jdbcType="VARCHAR"/><!--UUID-->
+		<result property="crueCrurUuid" column="CRUE_CRUR_UUID" jdbcType="VARCHAR"/><!--用户UUID-->
+		<result property="crueCrreUuid" column="CRUE_CRRE_UUID" jdbcType="VARCHAR"/><!--角色UUID-->
+	</resultMap>
+	
+	<sql id="field">
+		CRUE_UUID,
+		CRUE_CRUR_UUID,
+		CRUE_CRRE_UUID
+	</sql>
+	
+</mapper>
