@@ -5,6 +5,7 @@ import com.anka.apps.service.CoreUserService;
 import com.anka.base.controller.BaseController;
 import com.anka.base.model.BaseResult;
 import com.anka.base.model.BaseTree;
+import com.anka.base.utils.BaseCode;
 import com.anka.base.utils.PassSecurity;
 
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -95,8 +98,7 @@ public class CoreUserController extends BaseController<CoreUser>{
     
     @RequestMapping("/treeList")
     @ResponseBody
-	public List<BaseTree> treeList(CoreUser model){
-    	List<BaseTree> list = coreUserService.treeList(model);
-		return list;
+	public BaseResult<BaseTree<?>> treeList(CoreUser model){
+    	return super.successTree(coreUserService.treeList(model));
 	}
 }

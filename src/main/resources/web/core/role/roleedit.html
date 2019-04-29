@@ -116,7 +116,6 @@ input:-webkit-autofill {
 			});
 	
 			$("#user").click(function() {
-				var sdata = [{"strMap":{},"objMap":{},"strList":[],"objList":[],"page":0,"limit":0,"id":"586D526B2D0E11E996862016D8D9F30E","parentId":"0","title":"admin","spread":null,"isLast":null,"iconClass":null,"basicData":null,"children":[],"checkArr":"0"}];
 				layer.open({
 					type : 1, //type:0 也行
 					title : "选择树",
@@ -126,7 +125,6 @@ input:-webkit-autofill {
 					success : function(layero, index) {
 						var DTree = dtree.render({
 							elem : "#openTree5",
-							//data:sdata,
 							url : "${base}/core/user/treeList",
 							dataStyle: "layuiStyle",  //使用layui风格的数据格式
 							dataFormat: "list",  //配置data的风格为list
