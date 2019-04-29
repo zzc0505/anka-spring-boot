@@ -1,10 +1,8 @@
 package com.anka.base.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.Page;
 
 public class BaseResult<T> implements Serializable{
 
@@ -42,9 +40,6 @@ public class BaseResult<T> implements Serializable{
 
 	public BaseResult<T> setData(Object data) {
 		this.data = data;
-		if(data  instanceof List){
-			this.setCount(((Page) data).getTotal());
-		}
 		return this;
 	}
 

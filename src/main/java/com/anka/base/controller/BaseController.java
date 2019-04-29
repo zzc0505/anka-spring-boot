@@ -2,6 +2,7 @@ package com.anka.base.controller;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.anka.base.model.BaseModel;
 import com.anka.base.model.BaseResult;
+import com.anka.base.model.BaseTree;
 import com.anka.base.utils.BaseCode;
+import com.github.pagehelper.Page;
 
 public class BaseController<T extends BaseModel<T>> {
 
@@ -81,12 +84,41 @@ public class BaseController<T extends BaseModel<T>> {
 	}
 
 	public BaseResult<T> success(Object data) {
-		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode()).setMsg(BaseCode.SUCCESS.getMsg()).setData(data);
+		BaseResult<T> r = new BaseResult<T>()
+				.setCode(BaseCode.SUCCESS.getCode())
+				.setMsg(BaseCode.SUCCESS.getMsg())
+				.setData(data);
+		if(data  instanceof List){
+			r.setCount(((Page) data).getTotal());
+		}
+		return r;
 	}
 
 	public BaseResult<T> success(String msg, Object data) {
-		return new BaseResult<T>().setCode(BaseCode.SUCCESS.getCode())
-				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg()).setData(data);
+		BaseResult<T> r = new BaseResult<T>()
+				.setCode(BaseCode.SUCCESS.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg())
+				.setData(data);
+		if(data  instanceof List){
+			r.setCount(((Page) data).getTotal());
+		}
+		return r;
+	}
+	
+	public BaseResult<BaseTree<?>> successTree(Object data) {
+		BaseResult<BaseTree<?>> r = new BaseResult<BaseTree<?>>()
+				.setCode(BaseCode.SUCCESS.getCode())
+				.setMsg(BaseCode.SUCCESS.getMsg())
+				.setData(data);
+		return r;
+	}
+	
+	public BaseResult<BaseTree<?>> successTree(String msg, Object data) {
+		BaseResult<BaseTree<?>> r = new BaseResult<BaseTree<?>>()
+				.setCode(BaseCode.SUCCESS.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg())
+				.setData(data);
+		return r;
 	}
 
 	public ModelAndView success(Object data, String uri) {
@@ -117,12 +149,25 @@ public class BaseController<T extends BaseModel<T>> {
 	}
 
 	public BaseResult<T> fail(Object data) {
-		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode()).setMsg(BaseCode.FAILL.getMsg()).setData(data);
+		BaseResult<T> r = new BaseResult<T>()
+				.setCode(BaseCode.FAILL.getCode())
+				.setMsg(BaseCode.FAILL.getMsg())
+				.setData(data);
+		if(data  instanceof List){
+			r.setCount(((Page) data).getTotal());
+		}
+		return r;
 	}
 
 	public BaseResult<T> fail(String msg, Object data) {
-		return new BaseResult<T>().setCode(BaseCode.FAILL.getCode())
-				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg()).setData(data);
+		BaseResult<T> r = new BaseResult<T>()
+				.setCode(BaseCode.FAILL.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg())
+				.setData(data);
+		if(data  instanceof List){
+			r.setCount(((Page) data).getTotal());
+		}
+		return r;
 	}
 
 	public ModelAndView fail(Object data, String uri) {
@@ -141,5 +186,21 @@ public class BaseController<T extends BaseModel<T>> {
 		mv.addObject("msg", StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg());
 		mv.setViewName(uri);
 		return mv;
+	}
+	
+	public BaseResult<BaseTree<?>> failTree(Object data) {
+		BaseResult<BaseTree<?>> r = new BaseResult<BaseTree<?>>()
+				.setCode(BaseCode.FAILL.getCode())
+				.setMsg(BaseCode.FAILL.getMsg())
+				.setData(data);
+		return r;
+	}
+	
+	public BaseResult<BaseTree<?>> failTree(String msg, Object data) {
+		BaseResult<BaseTree<?>> r = new BaseResult<BaseTree<?>>()
+				.setCode(BaseCode.FAILL.getCode())
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg())
+				.setData(data);
+		return r;
 	}
 }
