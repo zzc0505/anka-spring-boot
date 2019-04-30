@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<#include "/core/include/include.ftl" />
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="${base}/js/layui/css/layui.css" />
+		<style type="text/css">
+			input:-webkit-autofill {
+				-webkit-box-shadow: 0 0 0px 1000px white inset;
+			}
+		</style>
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-fluid">
+			<div class="layui-form layui-form-pane" lay-filter="menuinfo">
+				<div class="layui-form-item"></div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 菜单名称</label>
+					<div class="layui-input-block">
+						<input name="crmeName" class="layui-input" type="text" autocomplete="off" lay-verify=""/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-cellphone"></i> URL</label>
+					<div class="layui-input-block">
+						<input name="crmeUrl" class="layui-input" type="text" autocomplete="off" lay-verify=""/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-read"></i> 图标class</label>
+					<div class="layui-input-block">
+						<input name="crmeIcon" class="layui-input" type="text" autocomplete="off" lay-verify=""/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+				    <label class="layui-form-label"><i class="layui-icon layui-icon-male"></i> 展示方式</label>
+				    <div class="layui-input-block">
+				      <input type="radio" name="crmeTarget" value="1" title="新页面" >
+				      <input type="radio" name="crmeTarget" value="2" title="原页面" >
+				    </div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-auz"></i> 菜单类型</label>
+					<div class="layui-input-block">
+						<input name="crmeType" class="layui-input" type="text" placeholder="请输入职务" autocomplete="off"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+				    <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 状态</label>
+				    <div class="layui-input-block">
+				    	<input type="checkbox" name="crmeStatus" lay-skin="switch" lay-text="启用|禁用" value="1" checked>
+				    </div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-btn-container">
+						<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="change">
+							<i class="layui-icon layui-icon-ok-circle"></i>提交
+						</button>
+					</div>
+				</div>
+				<input type="hidden" name="crmeUuid">
+				<input type="hidden" name="crmeParentUuid">
+			</div>
+		</div>
+		<script src="${base}/js/layui/layui.js"></script>
+		<script>
+			layui.use(['layer','form'],function(){
+				var layer = layui.layer
+				,form = layui.form
+				,$ = layui.jquery;
+				//表单赋值
+				form.val("menuinfo", {
+					"crurName": ""
+					
+				});
+				
+				//监控表单提交
+				form.on('submit(change)', function(data){
+					var obj = data.field;
+					$.post("${base}/core/menu/doSave",obj,function(res){
+						if(res.code == 0){
+							layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
+								parent.layer.closeAll();
+							});
+						}
+					});
+				});
+			})
+			//登陆按钮绑定回车
+			function onEnter(){
+				if(window.event.keyCode == 13){
+					document.getElementsByTagName("button")[0].click();
+				}
+			}
+		</script>
+	</body>
+</html>
