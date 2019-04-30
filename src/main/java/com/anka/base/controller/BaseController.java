@@ -1,17 +1,22 @@
 package com.anka.base.controller;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.anka.base.annotation.FCMD;
 import com.anka.base.model.BaseModel;
 import com.anka.base.model.BaseResult;
 import com.anka.base.model.BaseTree;
@@ -19,6 +24,18 @@ import com.anka.base.utils.BaseCode;
 import com.github.pagehelper.Page;
 
 public class BaseController<T extends BaseModel<T>> {
+	
+	protected final String OBJECT_FORMAT = "object_format";
+	protected final String TREE_FORMAT = "tree_format";
+	private String resultType = OBJECT_FORMAT;
+
+	public String getResultType() {
+		return resultType;
+	}
+
+	public void setResultType(String resultType) {
+		this.resultType = resultType;
+	}
 
 	/**
 	 * @Description: 通用页面跳转
@@ -86,10 +103,15 @@ public class BaseController<T extends BaseModel<T>> {
 	public BaseResult<T> success(Object data) {
 		BaseResult<T> r = new BaseResult<T>()
 				.setCode(BaseCode.SUCCESS.getCode())
-				.setMsg(BaseCode.SUCCESS.getMsg())
-				.setData(data);
-		if(data  instanceof List){
-			r.setCount(((Page) data).getTotal());
+				.setMsg(BaseCode.SUCCESS.getMsg());
+		if(data!=null){
+			if(resultType.equals(OBJECT_FORMAT)&&data instanceof List){
+				r.setData(data);
+				r.setCount(((Page) data).getTotal());
+			}
+			if(resultType.equals(TREE_FORMAT)){
+				r.setData(treeFormat(data));
+			}
 		}
 		return r;
 	}
@@ -97,10 +119,15 @@ public class BaseController<T extends BaseModel<T>> {
 	public BaseResult<T> success(String msg, Object data) {
 		BaseResult<T> r = new BaseResult<T>()
 				.setCode(BaseCode.SUCCESS.getCode())
-				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg())
-				.setData(data);
-		if(data  instanceof List){
-			r.setCount(((Page) data).getTotal());
+				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.SUCCESS.getMsg());
+		if(data!=null){
+			if(resultType.equals(OBJECT_FORMAT)&&data instanceof List){
+				r.setData(data);
+				r.setCount(((Page) data).getTotal());
+			}
+			if(resultType.equals(TREE_FORMAT)){
+				r.setData(treeFormat(data));
+			}
 		}
 		return r;
 	}
@@ -202,5 +229,81 @@ public class BaseController<T extends BaseModel<T>> {
 				.setMsg(StringUtils.hasText(msg) ? msg : BaseCode.FAILL.getMsg())
 				.setData(data);
 		return r;
+	}
+	
+	private List<Object> treeFormat(Object data){
+		List<Object> datas = new ArrayList<Object>();
+		if(data instanceof List){
+			List list = (List) data;
+			if(list.size()>0){
+				for (Object model : list) {
+					Class<?> superClass = model.getClass().getSuperclass();
+					System.out.println(superClass.getSimpleName());
+					if(superClass!=null&&superClass.getSimpleName().equals("BaseTree")){
+						BaseTree tree = new BaseTree();
+						//tree.setBasicData(model);
+						Field[] fields = model.getClass().getDeclaredFields();
+						for (Field f : fields) {
+							FCMD fCmd = f.getAnnotation(FCMD.class);
+							if(fCmd != null&&StringUtils.hasText(fCmd.fieldName())){
+								Method getMethod = getMd(model, fCmd.fieldName(), "get");
+								try {
+									Object val = getMethod.invoke(model, new Object[] {});
+									if(fCmd.type()==fCmd.type().UUID){
+										tree.setId(String.valueOf(val));
+									}
+									if(fCmd.type()==fCmd.type().TEXT){
+										tree.setTitle(String.valueOf(val));;
+									}
+									if(fCmd.type()==fCmd.type().PID){
+										tree.setParentId(String.valueOf(val));
+									}
+									if(fCmd.type()==fCmd.type().ICON){
+										tree.setIconClass(String.valueOf(val));
+									}
+								} catch (IllegalAccessException e) {
+									e.printStackTrace();
+								} catch (IllegalArgumentException e) {
+									e.printStackTrace();
+								} catch (InvocationTargetException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+						BeanUtils.copyProperties(tree, model);
+						datas.add(model);
+						this.resultType = OBJECT_FORMAT;
+					}
+				}
+			}
+		}
+		return datas;
+	}
+	/**
+	 * 根据对象，字段名，类型获取get set方法
+	 * @param obj class对象
+	 * @param filedName 字段名
+	 * @param type get/set
+	 * @return
+	 */
+	private Method getMd(Object obj, String filedName, String type,Class<?>... cal){
+		try {
+			Method method = null;
+			if(type.equals("set")){
+				method = obj.getClass().getMethod(
+						type + filedName.substring(0, 1).toUpperCase() + filedName.substring(1), cal[0]);
+			}
+			if(type.equals("get")){
+				method = obj.getClass().getMethod(
+						type + filedName.substring(0, 1).toUpperCase() + filedName.substring(1));
+			}
+			return method;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return null;
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

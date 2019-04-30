@@ -21,13 +21,6 @@ public interface CoreRoleService extends CrudBaseService<CoreRole> {
 	public Integer doSave(CoreRole model);
 	
 	/**
-	 * 批量删除
-	 * @param model
-	 * @return
-	 */
-	public Integer batchDelete(CoreRole model);
-	
-	/**
 	 * 角色列表
 	 * @param model
 	 * @return

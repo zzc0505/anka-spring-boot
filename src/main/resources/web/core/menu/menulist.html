@@ -36,10 +36,12 @@
 			    <div class="layui-col-md9">
 			    	<div class="layui-card">
 						<div class="table-search layui-card-header layui-admin-card-header">
+							<button class="layui-btn" data-type="add">添加</button>
+							<button class="layui-btn" data-type="del">删除</button>
 							<div class="layui-inline">
 								<label class="layui-form-label">搜索</label>
 								<div class="layui-input-block">
-									<input name="crurName" id="crurName" class="layui-input" type="text" placeholder="用户名/手机号/邮箱" autocomplete="off"/>
+									<input name="crmeName" id="crmeName" class="layui-input" type="text" placeholder="菜单名" autocomplete="off"/>
 								</div>
 							</div>
 							<button class="layui-btn" data-type="reload">搜索</button>
@@ -64,8 +66,7 @@
 				
 				dtree.render({
 					elem: "#openTree",
-					url: "",
-					menubar:true,
+					url: "${base}/core/menu/getTreeList",
 					dataStyle: "layuiStyle",  //使用layui风格的数据格式
 					dataFormat: "list",  //配置data的风格为list
 					response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
@@ -76,63 +77,72 @@
 				    elem: '#datatable'
 				    ,height: 480
 				    ,method: 'post'
-				    ,url:'${base}/core/user/getList' //数据接口
+				    ,url:'${base}/core/menu/getList' //数据接口
 				    ,id:'datatable'
 				    ,page: true
 				    ,cols: [[
       					{type: 'checkbox'}
       					,{type:'numbers',title: '序号'}
-				   		,{field:'crurUuid', title: 'UUID', hide:true}
-				      	,{field:'crurName', title: '用户名',align:'center'}
-				      	,{field:'crurSex', title: '性别',align:'center',templet: function(d){
-				      		if(d.crurSex=="1"){
-				      			return '男';
-				      		}else if(d.crurSex=="2"){
-				      			return '女';
-				      		}else{
-				      			 return '保密';
-				      		}
-					     }}
-				      	,{field:'crurMobile',  title: '手机号',align:'center'}
-				      	,{field:'crurEmail', title: '邮箱',align:'center'}
-				      	,{field:'crurStatus', title: '状态',align:'center', sort: true,templet: function(d){
+				   		,{field:'crmeUuid', title: 'UUID', hide:true}
+				      	,{field:'crmeName', title: '菜单名称',align:'center'}
+				      	,{field:'crmeType', title: '菜单类型',align:'center'}
+				      	,{field:'crmeUrl',  title: 'URL',align:'center'}
+				      	,{field:'crmeTarget', title: '展示方式',align:'center'}
+				      	,{field:'crmeStatus', title: '状态',align:'center', sort: true,templet: function(d){
 				      		if(d.crurStatus=="0"){
 				      			return '启用';
 				      		}else if(d.crurStatus=="1"){
 				      			return '禁用';
 				      		}
 					     }}
-				      	,{field:'crurOrd',title: '排序',align:'center', sort: true}
+				      	,{field:'crmeOrd',title: '排序',align:'center', sort: true}
 				    ]]
 				});
 				//定义查询动作
 				var $ = layui.$, active = {
-					reload: function(){
+					add: function(){
+						var url = "${base}/core/menu/menuedit?strMap.CMD=add";
+						layer.open({
+							title:"添加菜单",
+							type: 2,
+							content:url,
+							area: ['450px', '450px']
+						});
+					}
+					,del: function(){
+						var data = table.checkStatus('datatable').data;
+						var strList = new Array();
+						$.each(data,function(i,e){
+							strList.push(e.crmeUuid);
+						});
+						$.post("${base}/core/menu/batchDelete",{"strList":strList.join(",")},function(res){
+							if(res.code == 0){
+								layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
+									table.reload('datatable',{});
+								});
+							}
+						});
+					}
+					,search: function(){
 				    	//执行重载
 				      	table.reload('datatable', {
 				      		page: {
 					          	curr: 1 //重新从第 1 页开始
 					        }
 					        ,where: {
-					        	crurName: $('#crurName').val()
-					           	,crurMobile: $("#crurMobile").val()
-					           	,crurEmail: $("#crurEmail").val()
+					        	crmeName: $('#crmeName').val()
 					        }
 				      	});
 				    }
 				    ,remove: function(){
-				    	$('#crurName').val("");
-				    	$("#crurMobile").val("");
-				    	$("#crurEmail").val("");
+				    	$('#crmeName').val("");
 				    	//执行重载
 				      	table.reload('datatable', {
 					        page: {
 					          	curr: 1 //重新从第 1 页开始
 					        }
 					        ,where: {
-					        	crurName: ""
-					           	,crurMobile: ""
-					           	,crurEmail: ""
+					        	crmeName: ""
 					        }
 				    	});
 				    }

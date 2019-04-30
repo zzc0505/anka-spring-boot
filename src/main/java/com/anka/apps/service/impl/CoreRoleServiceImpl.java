@@ -12,7 +12,6 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -31,11 +30,9 @@ public class CoreRoleServiceImpl extends CrudBaseServiceSupport<CoreRole> implem
 
 	@Override
 	public Integer doSave(CoreRole model) {
-		model.setCrreUdate(new Date());
 		if(StringUtils.hasText(model.getCrreUuid())){
 			return super.update(model);
 		}else{
-			model.setCrreCdate(new Date());
 			return super.save(model);
 		}
 	}

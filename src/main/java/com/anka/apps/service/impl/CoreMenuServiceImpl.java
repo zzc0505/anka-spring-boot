@@ -4,7 +4,15 @@ import com.anka.apps.mapper.CoreMenuMapper;
 import com.anka.apps.model.CoreMenu;
 import com.anka.apps.service.CoreMenuService;
 import com.anka.base.service.TreeBaseServiceSupport;
+import com.github.pagehelper.PageHelper;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
+
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -19,6 +27,35 @@ public class CoreMenuServiceImpl extends TreeBaseServiceSupport<CoreMenu> implem
 
     @Resource
     private CoreMenuMapper coreMenuMapper;
-    
 
+	@Override
+	public List<CoreMenu> getTreeList(CoreMenu model) {
+		Example e = new Example(CoreMenu.class);
+		Criteria cn = e.createCriteria();
+		if(StringUtils.hasText(model.getCrmeName())){
+			cn.andLike("crmeName", "%"+model.getCrmeName()+"%");
+		}
+		return super.selectByExample(e);
+	}
+
+	@Override
+	public List<CoreMenu> getList(CoreMenu model) {
+		Example e = new Example(CoreMenu.class);
+		Criteria cn = e.createCriteria();
+		if(StringUtils.hasText(model.getCrmeName())){
+			cn.andLike("crmeName", "%"+model.getCrmeName()+"%");
+		}
+		PageHelper.startPage(model.getPage(), model.getLimit());
+		return super.selectByExample(e);
+	}
+
+	@Override
+	public Integer doSave(CoreMenu model) {
+		if(StringUtils.hasText(model.getCrmeUuid())){
+			return super.update(model);
+		}else{
+			return super.save(model);
+		}
+	}
+    
 }
