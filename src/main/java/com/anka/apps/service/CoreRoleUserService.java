@@ -1,5 +1,7 @@
 package com.anka.apps.service;
 
+import java.util.List;
+
 import com.anka.apps.model.CoreRoleUser;
 import com.anka.base.service.CrudBaseService;
 /**
@@ -10,4 +12,10 @@ import com.anka.base.service.CrudBaseService;
 */
 public interface CoreRoleUserService extends CrudBaseService<CoreRoleUser> {
 	
+	/**
+	 * 获取用户所有角色
+	 * @param crueCrurUuid
+	 * @return
+	 */
+	public List<String> getRolesByUserId(String crueCrurUuid);
 }

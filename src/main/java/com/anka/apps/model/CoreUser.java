@@ -69,7 +69,10 @@ public class CoreUser extends BaseModel<CoreUser> {
 	private String crurLockstatus;
 	/** 角色集合 */
 	@Transient
-	private Set<CoreRole> coreRole;
+	private Set<String> coreRole;
+	/** 权限集合 */
+	@Transient
+	private Set<String> coreGrant;
 	
 	public String getCrurUuid() {
 		return crurUuid;
@@ -197,11 +200,17 @@ public class CoreUser extends BaseModel<CoreUser> {
 	public void setCrurLockstatus(String crurLockstatus) {
 		this.crurLockstatus = crurLockstatus;
 	}
-	public Set<CoreRole> getCoreRole() {
-		return this.coreRole = this.coreRole == null? new LinkedHashSet<CoreRole>():this.coreRole;
+	public Set<String> getCoreRole() {
+		return this.coreRole = this.coreRole == null? new LinkedHashSet<String>():this.coreRole;
 	}
-	public void setCoreRole(Set<CoreRole> coreRole) {
+	public void setCoreRole(Set<String> coreRole) {
 		this.coreRole = coreRole;
+	}
+	public Set<String> getCoreGrant() {
+		return this.coreGrant = this.coreGrant == null? new LinkedHashSet<String>():this.coreGrant;
+	}
+	public void setCoreGrant(Set<String> coreGrant) {
+		this.coreGrant = coreGrant;
 	}
 	
 	@Override

@@ -1,6 +1,9 @@
 package com.anka.apps.mapper;
 
 import com.anka.base.mapper.CrudBaseMapper;
+
+import java.util.List;
+
 import com.anka.apps.model.CoreRoleUser;
 
 /**
@@ -10,5 +13,10 @@ import com.anka.apps.model.CoreRoleUser;
  * @version 1.0.0
  */
 public interface CoreRoleUserMapper extends CrudBaseMapper<CoreRoleUser>{
-	
+	/**
+	 * 获取用户所有角色
+	 * @param crueCrurUuid
+	 * @return
+	 */
+	public List<String> getRolesByUserId(String crueCrurUuid);
 }

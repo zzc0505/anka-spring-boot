@@ -6,6 +6,8 @@ import com.anka.apps.service.CoreRoleUserService;
 import com.anka.base.service.CrudBaseServiceSupport;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 /**
@@ -19,6 +21,9 @@ public class CoreRoleUserServiceImpl extends CrudBaseServiceSupport<CoreRoleUser
 
     @Resource
     private CoreRoleUserMapper coreRoleUserMapper;
-    
 
+	@Override
+	public List<String> getRolesByUserId(String crueCrurUuid) {
+		return coreRoleUserMapper.getRolesByUserId(crueCrurUuid);
+	}
 }

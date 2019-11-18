@@ -13,4 +13,11 @@
 		CRUE_CRRE_UUID
 	</sql>
 	
+	<select id="getRolesByUserId" resultType="string" parameterType="string">
+		SELECT CRRE_KEY FROM
+		CORE_ROLE_USER
+		LEFT JOIN CORE_ROLE ON CRUE_CRRE_UUID = CRRE_UUID
+		WHERE CRUE_CRUR_UUID = #{crueCrurUuid}
+		AND CRRE_STATUS = '0'
+	</select>
 </mapper>

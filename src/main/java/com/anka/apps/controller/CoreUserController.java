@@ -62,7 +62,7 @@ public class CoreUserController extends BaseController<CoreUser>{
     
     @RequestMapping("/userInfo")
     public ModelAndView userInfo(CoreUser model){
-    	model = coreUserService.getCoreUser(model);
+    	model = coreUserService.get(model.getCrurUuid());
     	model.setCrurPassword("");
     	return super.success(model,"core/user/userinfo");
     }
@@ -75,10 +75,8 @@ public class CoreUserController extends BaseController<CoreUser>{
 	}
     
     @RequestMapping("/passWordChange")
-    public ModelAndView passWordChange(CoreUser model){
-    	model = coreUserService.get(model.getCrurUuid());
-    	model.setCrurPassword(PassSecurity.getDecode(model.getCrurPassword(), "ANKA"));
-    	return super.success(model,"core/user/passwordchange");
+    public String passWordChange(CoreUser model){
+    	return "core/user/passwordchange";
     }
     
     @PostMapping("/passChange")

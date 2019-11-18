@@ -21,9 +21,9 @@ public class AnkaGenerator {
 	private static final String PASS_WORD = "123456";
 
 	// 表名称，不限大小写，可包含单字符通配符("_"),或多字符通配符("%");
-	private static final String TALBE_NAME = "core_menu";
+	private static final String TALBE_NAME = "core_role_grant";
 	// 数据类型，comn 常用数据 tree 树形数据 ,如果为空默认 comn
-	private static final String DATA_TYPE = "tree";
+	private static final String DATA_TYPE = "comn";
 	// 项目基础包名称，根据自己公司的项目修改
 	private static final String BASE_PACKAGE = "com.anka.apps";
 	// Model所在包

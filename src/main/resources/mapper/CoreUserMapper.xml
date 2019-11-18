@@ -91,12 +91,4 @@
 		CRRE_ORD
 	</sql>
 	
-	<select id="getCoreUser" resultMap="fieldMapper" parameterType="CoreUser">
-		SELECT 
-		<include refid="fieldExp" /> 
-		FROM CORE_USER 
-		LEFT JOIN CORE_ROLE_USER ON CRUR_UUID = CRUE_CRUR_UUID
-		LEFT JOIN CORE_ROLE ON CRRE_UUID = CRUE_CRRE_UUID
-		WHERE CRUR_UUID = #{crurUuid}
-	</select>
 </mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreRoleGrantMapper">
+	<resultMap type="CoreRoleGrant" id="fieldMapper">
+		<id property="crrgUuid" column="CRRG_UUID" jdbcType="VARCHAR"/><!--UUID-->
+		<result property="crrgCrreUuid" column="CRRG_CRRE_UUID" jdbcType="VARCHAR"/><!--角色UUID-->
+		<result property="crrgCrgrUuid" column="CRRG_CRGR_UUID" jdbcType="VARCHAR"/><!--权限UUID-->
+	</resultMap>
+	
+	<sql id="field">
+		CRRG_UUID,
+		CRRG_CRRE_UUID,
+		CRRG_CRGR_UUID
+	</sql>
+	
+	<select id="getGrantsByUserId" resultType="string" parameterType="string">
+		SELECT 
+			DISTINCT CRGR_KEY
+		FROM
+			CORE_GRANT,CORE_ROLE_GRANT,CORE_ROLE_USER
+		WHERE
+			CRGR_UUID = CRRG_CRGR_UUID
+		AND
+			CRRG_CRRE_UUID = CRUE_CRRE_UUID
+		AND 
+			CRUE_CRUR_UUID = #{crueCrurUuid}
+		AND 
+			CRGR_STATUS = '0'	
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreGrantMapper">
+	<resultMap type="CoreGrant" id="fieldMapper">
+		<id property="crgrUuid" column="CRGR_UUID" jdbcType="VARCHAR"/><!--UUID-->
+		<result property="crgrName" column="CRGR_NAME" jdbcType="VARCHAR"/><!--权限名称-->
+		<result property="crgrKey" column="CRGR_KEY" jdbcType="VARCHAR"/><!--权限值-->
+		<result property="crgrNote" column="CRGR_NOTE" jdbcType="VARCHAR"/><!--权限描述-->
+		<result property="crgrStatus" column="CRGR_STATUS" jdbcType="VARCHAR"/><!--状态-->
+		<result property="crgrCdate" column="CRGR_CDATE" jdbcType="TIMESTAMP"/><!--创建时间-->
+		<result property="crgrUdate" column="CRGR_UDATE" jdbcType="TIMESTAMP"/><!--修改时间-->
+		<result property="crgrOrd" column="CRGR_ORD" jdbcType="INTEGER"/><!--排序-->
+	</resultMap>
+	
+	<sql id="field">
+		CRGR_UUID,
+		CRGR_NAME,
+		CRGR_KEY,
+		CRGR_NOTE,
+		CRGR_STATUS,
+		CRGR_CDATE,
+		CRGR_UDATE,
+		CRGR_ORD
+	</sql>
+	
+</mapper>

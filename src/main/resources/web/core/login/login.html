@@ -58,7 +58,7 @@
 				form.on('submit(login)', function(data){
 					var obj = data.field;
 					$.post("${base}/postLogin",obj,function(res){
-						if(res.success){
+						if(res.code==0){
 							window.location.href="${base}/index";
 						}else{
 							layer.msg(res.msg, {icon: 5});
