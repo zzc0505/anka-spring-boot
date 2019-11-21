@@ -115,24 +115,4 @@ public class CoreUserServiceImpl extends CrudBaseServiceSupport<CoreUser> implem
 		.orEqualTo("crurEmail", model.getCrurName());
 		return super.selectByExample(e);
 	}
-
-	@Override
-	public List<BaseTree> treeList(CoreUser model) {
-		List<BaseTree> treeList = new ArrayList<BaseTree>();
-		Example e = new Example(CoreUser.class);
-		Criteria cn = e.createCriteria();
-		if(StringUtils.hasText(model.getCrurName())){
-			cn.andLike("crurName", "%"+model.getCrurName()+"%");
-		}
-		List<CoreUser> list = super.selectByExample(e);
-		for (CoreUser user : list) {
-			BaseTree tree = new BaseTree();
-			tree.setId(user.getCrurUuid());
-			tree.setTitle(user.getCrurName());
-			tree.setCheckArr("0");
-			tree.setParentId("0");
-			treeList.add(tree);
-		}
-		return treeList;
-	}
 }

@@ -95,7 +95,7 @@
 				form.on('submit(login)', function(data){
 					var obj = data.field;
 					$.post("${base}/postRegister",obj,function(res){
-						if(res.success){
+						if(res.code==0){
 							layer.msg(res.msg+'2秒后关闭', {icon: 1, time: 2000}, function(){
 								parent.layer.closeAll();
 							});

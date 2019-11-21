@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.persistence.Transient;
 
+import org.springframework.util.CollectionUtils;
+
 public class BaseModel<T extends BaseModel<T>> implements Serializable{
 	
 	private static final long serialVersionUID = 5627261198432599387L;
@@ -73,4 +75,21 @@ public class BaseModel<T extends BaseModel<T>> implements Serializable{
 		this.limit = limit;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		if(!CollectionUtils.isEmpty(strMap)){
+			builder.append("\tstrMap:").append(strMap);
+		}
+		if(!CollectionUtils.isEmpty(objMap)){
+			builder.append("\tobjMap:").append(objMap);
+		}
+		if(!CollectionUtils.isEmpty(strList)){
+			builder.append("\tstrList:").append(strList);
+		}
+		if(!CollectionUtils.isEmpty(objList)){
+			builder.append("\tobjList:").append(objList);
+		}
+		return builder.toString();
+	}
 }

@@ -128,6 +128,7 @@
 				var element = layui.element
 				,layer = layui.layer
 				,$ = layui.jquery;
+				
 				//锁屏初始化
 				$.post("${base}/core/user/lockChecked",{"crurUuid":"${user_info.crurUuid}"},function(res){
 					if(res.code == "0"){
@@ -159,6 +160,11 @@
 						});
 					}
 				});
+				
+				//滚动条效果
+				$(".layui-body").scroll(function (){
+					$(".layui-tab-title").css("top",$(this).scrollTop());
+				});
 				//隐藏tab主页关闭标签
 				$(".layui-tab-title li:first-child i:last-child").css("display","none");
 				//tab点击监控
@@ -168,10 +174,11 @@
 					$(".layui-nav-tree li dd").each(function(i,e){
 						if($(this).find("a").attr("lay-href")==url){
 							$(this).attr("class","layui-this");
+							$(".layui-tab-item.layui-show").find("iframe").attr("src",$(".layui-tab-item.layui-show").find("iframe").attr("src"));
 						}else{
 							$(this).attr("class","");
 						}
-					})
+					});
 				});
 				//顶部左侧菜单监控
 				element.on('nav(leftmenu)',function(elem){

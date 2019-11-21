@@ -4,6 +4,7 @@ import com.anka.apps.model.CoreMenu;
 import com.anka.apps.service.CoreMenuService;
 import com.anka.base.controller.BaseController;
 import com.anka.base.model.BaseResult;
+import com.anka.base.model.BaseTree;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,9 +28,8 @@ public class CoreMenuController extends BaseController<CoreMenu>{
     
     @RequestMapping("/getTreeList")
     @ResponseBody
-    public BaseResult<CoreMenu> getTreeList(CoreMenu model){
-    	this.setResultType(TREE_FORMAT);
-    	return super.success(coreMenuService.getTreeList(model));
+    public BaseResult<BaseTree<?>> getTreeList(CoreMenu model){
+    	return super.successTree(coreMenuService.getTreeList(model));
     }
     
     @PostMapping("/getList")

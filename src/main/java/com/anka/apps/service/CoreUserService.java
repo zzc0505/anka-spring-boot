@@ -59,8 +59,4 @@ public interface CoreUserService extends CrudBaseService<CoreUser> {
 	 * @return
 	 */
 	public List<CoreUser> selectUserByname(CoreUser model);
-	/**
-	 * 人员选择树
-	 */
-	public List<BaseTree> treeList(CoreUser model);
 }

@@ -3,22 +3,16 @@ package com.anka.base.aspect;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.anka.base.annotation.FCMD;
-import com.anka.base.model.BaseTree;
 
 @Component
 @Aspect
@@ -32,10 +26,6 @@ public class MethodAspect {
 	public void doUpdate() {
 	};
 	
-	@Pointcut("execution(* com.anka.base.model.BaseResult.setData(*))")
-	public void doSetData() {
-	};
-	
 	@SuppressWarnings("static-access")
 	@Before("doSave()")
 	public void beforeDoSave(JoinPoint joinPoint) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -47,11 +37,12 @@ public class MethodAspect {
 				String filedName = fCmd.fieldName();
 				Method getMethod = getMd(args, filedName, "get");
 				Object val = getMethod.invoke(args, new Object[] {});
+				System.out.println(val);
 				if(fCmd.type()==fCmd.type().UUID){
 					String s = java.util.UUID.randomUUID().toString();
 					s = s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23)
 							+ s.substring(24);
-					if (val == null) {
+					if (val == null || val == "") {
 						Method setMethod = getMd(args, filedName, "set", String.class);
 						setMethod.invoke(args, s.toUpperCase());
 					}
@@ -86,54 +77,6 @@ public class MethodAspect {
 					} catch (InvocationTargetException e) {
 						e.printStackTrace();
 					}
-				}
-			}
-		}
-	}
-	
-	@SuppressWarnings({ "rawtypes", "static-access" })
-	@Around("doSetData()")
-	public void beforeDoSetData(ProceedingJoinPoint joinPoint) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		Object[] args = joinPoint.getArgs();
-		if(args[0] instanceof List){
-			List list = (List) args[0];
-			if(list.size()>0){
-				List<Object> datas = new ArrayList<Object>();
-				for (Object model : list) {
-					Class<?> superClass = model.getClass().getSuperclass();
-					System.out.println(superClass.getSimpleName());
-					if(superClass!=null&&superClass.getSimpleName().equals("BaseTree")){
-						BaseTree tree = new BaseTree();
-						tree.setBasicData(model);
-						Field[] fields = model.getClass().getDeclaredFields();
-						for (Field f : fields) {
-							FCMD fCmd = f.getAnnotation(FCMD.class);
-							if(fCmd != null&&StringUtils.hasText(fCmd.fieldName())){
-								Method getMethod = getMd(model, fCmd.fieldName(), "get");
-								Object val = getMethod.invoke(model, new Object[] {});
-								if(fCmd.type()==fCmd.type().UUID){
-									tree.setId(String.valueOf(val));
-								}
-								if(fCmd.type()==fCmd.type().TEXT){
-									tree.setTitle(String.valueOf(val));;
-								}
-								if(fCmd.type()==fCmd.type().PID){
-									tree.setParentId(String.valueOf(val));
-								}
-								if(fCmd.type()==fCmd.type().ICON){
-									tree.setIconClass(String.valueOf(val));
-								}
-							}
-						}
-						BeanUtils.copyProperties(tree, model);
-						datas.add(model);
-					}
-				}
-				args[0] = datas;
-				try {
-					joinPoint.proceed(args);
-				} catch (Throwable e) {
-					e.printStackTrace();
 				}
 			}
 		}

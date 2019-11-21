@@ -16,6 +16,17 @@
 			<div class="layui-form layui-form-pane" lay-filter="menuinfo">
 				<div class="layui-form-item"></div>
 				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-auz"></i> 菜单类型</label>
+					<div class="layui-input-block">
+						<select name="crmeType" id="crmeType">
+							<option value="">请选择</option>
+							<option value="0">顶部菜单</option>
+							<option value="1">左侧菜单</option>
+							<option value="2">左侧子菜单</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
 					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 菜单名称</label>
 					<div class="layui-input-block">
 						<input name="crmeName" class="layui-input" type="text" autocomplete="off" lay-verify=""/>
@@ -28,7 +39,7 @@
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label"><i class="layui-icon layui-icon-read"></i> 图标class</label>
+					<label class="layui-form-label"><i class="layui-icon layui-icon-read"></i> 图标</label>
 					<div class="layui-input-block">
 						<input name="crmeIcon" class="layui-input" type="text" autocomplete="off" lay-verify=""/>
 					</div>
@@ -41,15 +52,10 @@
 				    </div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label"><i class="layui-icon layui-icon-auz"></i> 菜单类型</label>
-					<div class="layui-input-block">
-						<input name="crmeType" class="layui-input" type="text" placeholder="请输入职务" autocomplete="off"/>
-					</div>
-				</div>
-				<div class="layui-form-item">
 				    <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 状态</label>
 				    <div class="layui-input-block">
-				    	<input type="checkbox" name="crmeStatus" lay-skin="switch" lay-text="启用|禁用" value="1" checked>
+				    	<input type="radio" name="crmeStatus" value="0" title="启用" checked>
+				    	<input type="radio" name="crmeStatus" value="1" title="禁用" >
 				    </div>
 				</div>
 				<div class="layui-form-item">
@@ -81,7 +87,9 @@
 					$.post("${base}/core/menu/doSave",obj,function(res){
 						if(res.code == 0){
 							layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
-								parent.layer.closeAll();
+								parent.location.reload();
+								var index = parent.layer.getFrameIndex(window.name);
+								parent.layer.close(index);
 							});
 						}
 					});

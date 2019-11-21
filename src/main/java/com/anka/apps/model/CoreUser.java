@@ -38,6 +38,7 @@ public class CoreUser extends BaseModel<CoreUser> {
 	/** 职务 */
 	private String crurPost;
 	/** 所属机构uuid */
+	@FCMD(fieldName="crurCrorUuid",type=CMM.PID)
 	private String crurCrorUuid;
 	/** 所属机构name */
 	private String crurCrorName;

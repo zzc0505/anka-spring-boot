@@ -5,7 +5,6 @@ import com.anka.apps.service.CoreUserService;
 import com.anka.base.controller.BaseController;
 import com.anka.base.model.BaseResult;
 import com.anka.base.model.BaseTree;
-import com.anka.base.utils.BaseCode;
 import com.anka.base.utils.PassSecurity;
 
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -74,17 +71,17 @@ public class CoreUserController extends BaseController<CoreUser>{
 		return super.success();
 	}
     
-    @RequestMapping("/passWordChange")
-    public String passWordChange(CoreUser model){
-    	return "core/user/passwordchange";
-    }
-    
     @PostMapping("/passChange")
     @ResponseBody
 	public BaseResult<CoreUser> passChange(CoreUser model){
-    	model.setCrurPassword(PassSecurity.getEncode(model.getCrurPassword(), "ANKA"));
-		coreUserService.update(model);
-		return super.success();
+    	CoreUser oldUser =  coreUserService.get(model.getCrurUuid());
+    	if(oldUser.getCrurPassword().equals(PassSecurity.getEncode(model.getStrMap().get("oldPassword"), "ANKA"))){
+    		model.setCrurPassword(PassSecurity.getEncode(model.getCrurPassword(), "ANKA"));
+    		coreUserService.update(model);
+    		return super.success();
+    	}else{
+    		return super.fail("原密码输入错误!");
+    	}
 	}
     
     @PostMapping("/getList")
@@ -97,6 +94,6 @@ public class CoreUserController extends BaseController<CoreUser>{
     @RequestMapping("/treeList")
     @ResponseBody
 	public BaseResult<BaseTree<?>> treeList(CoreUser model){
-    	return super.successTree(coreUserService.treeList(model));
+    	return super.successTree(coreUserService.getList(model));
 	}
 }

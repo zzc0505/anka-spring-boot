@@ -68,7 +68,7 @@
 				//定义查询动作
 				var $ = layui.$, active = {
 					add: function(){
-						var url = "${base}/core/role/roleedit?strMap.CMD=add";
+						var url = "${base}/core/role/roleedit?"+encodeURIComponent("strMap['CMD']")+"=add";
 						window.location.href= url;
 					}
 					,del: function(){
