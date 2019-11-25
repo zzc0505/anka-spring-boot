@@ -29,5 +29,10 @@ public interface CoreMenuService extends TreeBaseService<CoreMenu> {
 	 * @return
 	 */
 	public Integer doSave(CoreMenu model);
+	/**
+	 * 获取当前登录用户的菜单列表
+	 * @return
+	 */
+	public List<CoreMenu> getMenus(String type);
 	
 }

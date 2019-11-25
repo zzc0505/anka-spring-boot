@@ -33,12 +33,15 @@
 					<li class="layui-nav-item">
 						<a href="javascript:;" class="refresh" title="刷新当前"><i class="layui-icon layui-icon-refresh-3"></i></a>
 					</li>
+					<#assign first = "">
+					<#list data.top as menu>
 					<li class="layui-nav-item">
-						<a href="javascript:;" class="layui-this" lay-href="BDCD88C49332445085EDC4519A111E92"><i class="layui-icon layui-icon-password"></i>顶部菜单一</a>
+						<#if menu_index==0>
+						<#assign first = menu.crmeUuid>
+						</#if>
+						<a href="javascript:;" class="<#if menu_index==0>layui-this</#if>" lay-href="${menu.crmeUuid}"><i class="layui-icon layui-icon-password"></i>${menu.crmeName}</a>
 					</li>
-					<li class="layui-nav-item">
-						<a href="javascript:;" lay-href="ADCD88C49332445085EDC4519A111E92"><i class="layui-icon layui-icon-password"></i>顶部菜单二</a>
-					</li>
+					</#list>
 				</ul>
 				<!--头部右侧导航-->
 				<ul class="layui-nav layui-layout-right" lay-filter="rightmenu">
@@ -67,38 +70,21 @@
 				<div class="layui-side-scroll layui-bg-black">
 					<div class="layui-logo">后台管理系统</div>
 					<ul class="layui-nav layui-nav-tree" lay-filter="navtree">
-						<div class="layui-show" uuid="BDCD88C49332445085EDC4519A111E92">
+						<#list data.left as menu>
+						<div class="<#if menu.crmeParentUuid==first>layui-show<#else>layui-hide</#if>" uuid="${menu.crmeParentUuid}">
 							<!--默认展开-->
 							<li class="layui-nav-item layui-nav-itemed">
-								<a href="javascript:;" title="主页"><i class="layui-icon layui-icon-home"></i><cite>主页</cite></a>
+								<a href="javascript:;" title="${menu.crmeName}"><i class="layui-icon layui-icon-home"></i><cite>${menu.crmeName}</cite></a>
 								<dl class="layui-nav-child">
-									<dd><a href="javascript:;">列表一</a></dd>
-									<dd><a href="javascript:;">列表二</a></dd>
-									<dd><a href="javascript:;">列表三</a></dd>
-								</dl>
-							</li>
-							<li class="layui-nav-item">
-								<a href="javascript:;" title="用户"><i class="layui-icon layui-icon-user"></i><cite>用户</cite></a>
-								<dl class="layui-nav-child">
-									<dd><a href="javascript:;" lay-href="${base}/core/user/userlist">用户管理</a></dd>
-								</dl>
-							</li>
-							<li class="layui-nav-item">
-								<a href="javascript:;" title="设置"><i class="layui-icon layui-icon-set"></i><cite>系统设置</cite></a>
-								<dl class="layui-nav-child">
-									<dd><a href="javascript:;" lay-href="${base}/core/menu/menulist">菜单设置</a></dd>
-									<dd><a href="javascript:;" lay-href="${base}/core/role/rolelist">角色设置</a></dd>
+									<#list data.leftChild as child>
+									<#if child.crmeParentUuid==menu.crmeUuid>
+									<dd><a href="javascript:;" lay-href="${child.crmeUrl}">${child.crmeName}</a></dd>
+									</#if>
+									</#list>
 								</dl>
 							</li>
 						</div>
-						<div class="layui-hide" uuid="ADCD88C49332445085EDC4519A111E92">
-							<li class="layui-nav-item layui-nav-itemed">
-								<a href="javascript:;" title="菜单"><i class="layui-icon layui-icon-set"></i><cite>菜单</cite></a>
-								<dl class="layui-nav-child">
-									<dd><a href="javascript:;" lay-href="">菜单一</a></dd>
-								</dl>
-							</li>
-						</div>
+						</#list>
 					</ul>
 				</div>
 			</div>
@@ -112,7 +98,7 @@
 						</ul>
 						<div class="layui-tab-content">
 	                    	<div class="layui-tab-item layui-show">
-	                    		<iframe src="${base}/home" class="layui-admin-iframe" scrolling="no" frameborder="0" onload="setIframeHeight(this);"></iframe>
+	                    		<iframe src="${base}/home" class="layui-admin-iframe" scrolling="no" frameborder="0" onload="setIframeHeight(this);" style="z-index: -1;"></iframe>
 		                    </div>
 	                	</div>
 					</div>

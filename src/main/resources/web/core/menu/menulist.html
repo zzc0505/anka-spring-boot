@@ -23,11 +23,12 @@
 			 		<div class="layui-card">
 			 			<div class="table-search layui-card-header layui-admin-card-header">
 			 				<div class="layui-inline">
-								
+								<input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
 							</div>
+							<button type="button" class="layui-btn search"><i class="layui-icon layui-icon-search"></i></button>
 			 			</div>
 			 			<div class="layui-card-body layui-admin-card-body">
-			 				<div style="overflow: auto;">
+			 				<div style="overflow: auto;" id="toolbarDiv">
 								<ul id="openTree" class="dtree" data-id="0"></ul>
 							</div>
 			 			</div>
@@ -49,6 +50,7 @@
 						</div>
 						<div class="layui-card-body layui-admin-card-body">
 						    <table class="layui-hide" id="datatable"></table>
+						    <input id="crmeParentUuid" class="layui-input" type="hidden" />
 						</div>
 					</div>
 			    </div>
@@ -67,11 +69,33 @@
 				var DTree = dtree.render({
 					elem: "#openTree",
 					url: "${base}/core/menu/getTreeList",
+					method: "POST",
+					width: "100%",
+					height: "full",
+					scroll:"#toolbarDiv",
 					dataStyle: "layuiStyle",  //使用layui风格的数据格式
 					dataFormat: "list",  //配置data的风格为list
 					response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
-					checkbar:true,
-					checkbarType:"no-all"
+					checkbar:false,
+					line:true,
+					checkbarType:"no-all",
+					defaultRequest:{nodeId:"id"},//默认请求参数定义
+					filterRequest:["context","basicData"]//默认请求参数过滤
+				});
+				
+				//节点点击事件
+				dtree.on("node('openTree')" ,function(obj){
+					var node = obj.param;
+					$("#crmeParentUuid").val(node.id);
+					//执行重载
+			      	table.reload('datatable', {
+			      		page: {
+				          	curr: 1 //重新从第 1 页开始
+				        }
+				        ,where: {
+				        	crmeParentUuid: node.id
+				        }
+			      	});
 				});
 				
 				table.render({
@@ -116,7 +140,7 @@
 				//定义查询动作
 				var $ = layui.$, active = {
 					add: function(){
-						var url = "${base}/core/menu/menuedit?strMap.CMD=add";
+						var url = "${base}/core/menu/menuedit?crmeParentUuid="+$("#crmeParentUuid").val();
 						layer.open({
 							title:"添加菜单",
 							type: 2,

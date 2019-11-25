@@ -45,6 +45,9 @@ public class CoreMenuServiceImpl extends TreeBaseServiceSupport<CoreMenu> implem
 		if(StringUtils.hasText(model.getCrmeName())){
 			cn.andLike("crmeName", "%"+model.getCrmeName()+"%");
 		}
+		if(StringUtils.hasText(model.getCrmeParentUuid())){
+			cn.andEqualTo("crmeParentUuid", model.getCrmeParentUuid());
+		}
 		PageHelper.startPage(model.getPage(), model.getLimit());
 		return super.selectByExample(e);
 	}
@@ -57,5 +60,12 @@ public class CoreMenuServiceImpl extends TreeBaseServiceSupport<CoreMenu> implem
 			return super.save(model);
 		}
 	}
-    
+
+	@Override
+	public List<CoreMenu> getMenus(String type) {
+		Example e = new Example(CoreMenu.class);
+		Criteria cn = e.createCriteria();
+		cn.andEqualTo("crmeType", type);
+		return super.selectByExample(e);
+	}
 }

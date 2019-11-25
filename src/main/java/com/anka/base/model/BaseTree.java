@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.persistence.Transient;
 
-public class BaseTree<T extends BaseTree<T>> extends BaseModel<T> implements Serializable {
+public class BaseTree<T extends BaseModel<T>> extends BaseModel<T> implements Serializable {
 	
 	private static final long serialVersionUID = 5601493892048597045L;
 	
@@ -24,7 +24,13 @@ public class BaseTree<T extends BaseTree<T>> extends BaseModel<T> implements Ser
 	private Boolean spread;
 	/** 是否最后一级节点 */
 	@Transient
-	private Boolean isLast;
+	private Boolean last;
+	/** 是否隐藏*/
+	@Transient
+	private Boolean hide;
+	/** 是否禁用*/
+	@Transient
+	private Boolean disabled;
 	/** 自定义图标class */
 	@Transient
 	private String iconClass;
@@ -62,11 +68,23 @@ public class BaseTree<T extends BaseTree<T>> extends BaseModel<T> implements Ser
 	public void setSpread(Boolean spread) {
 		this.spread = spread;
 	}
-	public Boolean getIsLast() {
-		return isLast;
+	public Boolean getLast() {
+		return last;
 	}
-	public void setIsLast(Boolean isLast) {
-		this.isLast = isLast;
+	public void setLast(Boolean last) {
+		this.last = last;
+	}
+	public Boolean getHide() {
+		return hide;
+	}
+	public void setHide(Boolean hide) {
+		this.hide = hide;
+	}
+	public Boolean getDisabled() {
+		return disabled;
+	}
+	public void setDisabled(Boolean disabled) {
+		this.disabled = disabled;
 	}
 	public String getIconClass() {
 		return iconClass;

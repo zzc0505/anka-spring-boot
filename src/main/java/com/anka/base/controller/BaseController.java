@@ -243,6 +243,7 @@ public class BaseController<T extends BaseModel<T>> {
 							tree.setParentId(val.toString());
 						}else{
 							tree.setParentId("0");
+							tree.setLast(false);
 						}
 					}
 					if(fCmd.type()==fCmd.type().ICON){

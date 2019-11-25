@@ -1,5 +1,9 @@
 package com.anka.apps.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -18,8 +22,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.anka.apps.model.CoreMenu;
 import com.anka.apps.model.CoreUser;
+import com.anka.apps.service.CoreMenuService;
 import com.anka.apps.service.CoreUserService;
 import com.anka.base.controller.BaseController;
 import com.anka.base.model.BaseResult;
@@ -32,10 +39,19 @@ public class CoreLoginController extends BaseController<CoreUser>{
 	
 	@Autowired
 	private CoreUserService coreUserService;
+	@Autowired
+	private CoreMenuService coreMenuService;
 
 	@RequestMapping("/index")
-	public String index(){
-		return "core/index/index";
+	public ModelAndView index(){
+		List<CoreMenu> top = coreMenuService.getMenus("0");//获取顶部菜单
+		List<CoreMenu> left = coreMenuService.getMenus("1");//获取左侧菜单
+		List<CoreMenu> leftChild = coreMenuService.getMenus("2");//获取左侧子级菜单
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("top", top);
+		map.put("left", left);
+		map.put("leftChild", leftChild);
+		return super.success(map, "core/index/index");
 	}
 	
 	@RequestMapping("/home")
