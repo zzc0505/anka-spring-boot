@@ -39,7 +39,7 @@
 						<#if menu_index==0>
 						<#assign first = menu.crmeUuid>
 						</#if>
-						<a href="javascript:;" class="<#if menu_index==0>layui-this</#if>" lay-href="${menu.crmeUuid}"><i class="layui-icon layui-icon-password"></i>${menu.crmeName}</a>
+						<a href="javascript:;" class="<#if menu_index==0>layui-this</#if>" lay-href="${menu.crmeUuid}"><i class="layui-icon ${menu.crmeIcon}"></i>${menu.crmeName}</a>
 					</li>
 					</#list>
 				</ul>
