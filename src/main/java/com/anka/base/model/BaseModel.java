@@ -8,7 +8,11 @@ import java.util.Map;
 
 import javax.persistence.Transient;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.util.CollectionUtils;
+
+import com.anka.apps.model.CoreUser;
 
 public class BaseModel<T extends BaseModel<T>> implements Serializable{
 	
@@ -26,6 +30,8 @@ public class BaseModel<T extends BaseModel<T>> implements Serializable{
 	private Integer page;
 	@Transient
 	private Integer limit;
+	@Transient
+	private CoreUser LoginUser = (CoreUser) SecurityUtils.getSubject().getPrincipal();
 
 	public Map<String, String> getStrMap() {
 		return this.strMap = this.strMap == null?new HashMap<String, String>():this.strMap;
@@ -75,6 +81,10 @@ public class BaseModel<T extends BaseModel<T>> implements Serializable{
 		this.limit = limit;
 	}
 	
+	public CoreUser getLoginUser() {
+		return LoginUser;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

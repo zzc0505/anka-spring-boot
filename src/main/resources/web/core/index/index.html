@@ -199,13 +199,14 @@
 						window.location.href="${base}/index";
 					}else{//动态生成的菜单
 						var url = $(this).attr("lay-href");
-						$(".layui-nav-tree").find("div").each(function(em,ind){
+						$(".layui-nav-tree").find("div").each(function(ind,em){
 							if($(this).attr("uuid")==url){
 								$(this).attr("class","layui-show");
 							}else{
 								$(this).attr("class","layui-hide");
 							}
 						});
+						$(".layui-nav-tree").find("div.layui-show:first").find('.layui-nav-child dd a:first').click();
 					}
 				});
 				//顶部右侧菜单监控
