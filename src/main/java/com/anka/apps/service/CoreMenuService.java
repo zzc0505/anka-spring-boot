@@ -12,6 +12,12 @@ import com.anka.base.service.TreeBaseService;
 */
 public interface CoreMenuService extends TreeBaseService<CoreMenu> {
 	/**
+	 * 编辑菜单
+	 * @param model
+	 * @return
+	 */
+	public CoreMenu menuEdit(CoreMenu model);
+	/**
 	 * 获取菜单树
 	 * @param model
 	 * @return

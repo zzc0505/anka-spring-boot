@@ -7,9 +7,11 @@ import com.anka.base.model.BaseResult;
 import com.anka.base.model.BaseTree;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
@@ -25,6 +27,11 @@ public class CoreMenuController extends BaseController<CoreMenu>{
 
     @Resource
     private CoreMenuService coreMenuService;
+    
+    @RequestMapping("/menuedit")
+    public ModelAndView menuEdit(CoreMenu model){
+    	return super.success(coreMenuService.menuEdit(model), "/core/menu/menuedit");
+    }
     
     @RequestMapping("/getTreeList")
     @ResponseBody

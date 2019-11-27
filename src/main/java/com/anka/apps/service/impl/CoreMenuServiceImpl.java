@@ -29,6 +29,14 @@ public class CoreMenuServiceImpl extends TreeBaseServiceSupport<CoreMenu> implem
     private CoreMenuMapper coreMenuMapper;
 
 	@Override
+	public CoreMenu menuEdit(CoreMenu model) {
+		if(StringUtils.hasText(model.getCrmeUuid())){
+			model = super.get(model.getCrmeUuid());
+		}
+		return model;
+	}
+
+	@Override
 	public List<CoreMenu> getTreeList(CoreMenu model) {
 		Example e = new Example(CoreMenu.class);
 		Criteria cn = e.createCriteria();
