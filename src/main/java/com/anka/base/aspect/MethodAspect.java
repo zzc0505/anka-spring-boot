@@ -9,14 +9,19 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.anka.apps.service.CoreSeqService;
 import com.anka.base.annotation.FCMD;
 
 @Component
 @Aspect
 public class MethodAspect {
+	
+	@Autowired
+	private CoreSeqService coreSeqService;
 
 	@Pointcut("execution(* com.anka.base.mapper.CrudBaseMapper.insert*(*))")
 	public void doSave() {
@@ -51,6 +56,18 @@ public class MethodAspect {
 					if (val == null) {
 						Method setMethod = getMd(args, filedName, "set", Date.class);
 						setMethod.invoke(args, new Date());
+					}
+				}
+				if(fCmd.type()==fCmd.type().STATUS){
+					if (val == null || val == "") {
+						Method setMethod = getMd(args, filedName, "set", String.class);
+						setMethod.invoke(args, "0");
+					}
+				}
+				if(fCmd.type()==fCmd.type().ORDER){
+					if (val == null){
+						Method setMethod = getMd(args, filedName, "set", Integer.class);
+						setMethod.invoke(args, coreSeqService.nextval("NEXT"));
 					}
 				}
 			}

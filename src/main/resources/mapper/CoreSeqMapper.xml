@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anka.apps.mapper.CoreSeqMapper">
+	<resultMap type="CoreSeq" id="fieldMapper">
+		<id property="name" column="name" jdbcType="VARCHAR"/><!--序列名-->
+		<result property="startValue" column="start_value" jdbcType="INTEGER"/><!--初始值-->
+		<result property="incrementValue" column="increment_value" jdbcType="INTEGER"/><!--步长-->
+	</resultMap>
+	
+	<sql id="field">
+		name,
+		start_value,
+		increment_value
+	</sql>
+	
+	<select id="nextval" parameterType="string" resultType="Integer">
+		SELECT nextval(#{name}) from dual
+	</select>
+</mapper>
