@@ -2,14 +2,13 @@ package com.anka.apps.model;
 
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.anka.base.annotation.FCMD;
+import com.anka.base.annotation.FCMD.CMM;
 import com.anka.base.model.BaseModel;
-
 /**
- * @Description:角色表(CoreRole)模型对象
+ * @Description:(CoreRole)模型对象
  * @author AnkaRebirth
  * @version 1.0.0
  */
@@ -17,21 +16,26 @@ public class CoreRole extends BaseModel<CoreRole> {
 
 	/** UUID */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "SELECT UPPER(REPLACE(UUID(),'-',''))")
+	@FCMD(fieldName="crreUuid",type=CMM.UUID)
 	private String crreUuid;
 	/** 角色名 */
+	@FCMD(fieldName="crreName",type=CMM.TEXT)
 	private String crreName;
 	/** 唯一标识 */
 	private String crreKey;
 	/** 角色说明 */
 	private String crreNote;
 	/** 状态 */
+	@FCMD(fieldName="crreStatus",type=CMM.STATUS)
 	private String crreStatus;
 	/** 创建时间 */
+	@FCMD(fieldName="crreCdate",type=CMM.CDATE)
 	private Date crreCdate;
 	/** 修改时间 */
+	@FCMD(fieldName="crreUdate",type=CMM.UDATE)
 	private Date crreUdate;
 	/** 排序号 */
+	@FCMD(fieldName="crreOrd",type=CMM.ORDER)
 	private Integer crreOrd;
 
 	public String getCrreUuid() {
