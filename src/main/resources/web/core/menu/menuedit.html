@@ -15,6 +15,14 @@
 		<div class="layui-fluid">
 			<div class="layui-form layui-form-pane" lay-filter="menuinfo">
 				<div class="layui-form-item"></div>
+				<#if data.crmeParentUuid??&&data.crmeParentUuid!="">
+				<div class="layui-form-item">
+					<label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 父菜单</label>
+					<div class="layui-input-block">
+						<input id="parentName" value="${data.strMap.parentName!''}" class="layui-input" type="text" readonly="readonly"/>
+					</div>
+				</div>
+				</#if>
 				<div class="layui-form-item">
 					<label class="layui-form-label"><i class="layui-icon layui-icon-auz"></i> 菜单类型</label>
 					<div class="layui-input-block">
@@ -48,13 +56,13 @@
 				    <label class="layui-form-label"><i class="layui-icon layui-icon-male"></i> 展示方式</label>
 				    <div class="layui-input-block">
 				      <input type="radio" name="crmeTarget" value="1" title="新页面" >
-				      <input type="radio" name="crmeTarget" value="2" title="原页面" >
+				      <input type="radio" name="crmeTarget" value="2" title="原页面" checked="checked">
 				    </div>
 				</div>
 				<div class="layui-form-item">
 				    <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 状态</label>
 				    <div class="layui-input-block">
-				    	<input type="radio" name="crmeStatus" value="0" title="启用" checked>
+				    	<input type="radio" name="crmeStatus" value="0" title="启用" checked="checked">
 				    	<input type="radio" name="crmeStatus" value="1" title="禁用" >
 				    </div>
 				</div>

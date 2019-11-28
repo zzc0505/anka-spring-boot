@@ -4,6 +4,7 @@ import com.anka.apps.mapper.CoreMenuMapper;
 import com.anka.apps.model.CoreMenu;
 import com.anka.apps.service.CoreMenuService;
 import com.anka.base.service.TreeBaseServiceSupport;
+import com.anka.base.utils.MyUtils;
 import com.github.pagehelper.PageHelper;
 
 import tk.mybatis.mapper.entity.Example;
@@ -12,6 +13,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -32,6 +34,10 @@ public class CoreMenuServiceImpl extends TreeBaseServiceSupport<CoreMenu> implem
 	public CoreMenu menuEdit(CoreMenu model) {
 		if(StringUtils.hasText(model.getCrmeUuid())){
 			model = super.get(model.getCrmeUuid());
+		}
+		if(StringUtils.hasText(model.getCrmeParentUuid())){
+			CoreMenu parent = super.get(model.getCrmeParentUuid());
+			model.getStrMap().put("parentName", parent.getCrmeName());
 		}
 		return model;
 	}
@@ -79,4 +85,36 @@ public class CoreMenuServiceImpl extends TreeBaseServiceSupport<CoreMenu> implem
 		e.orderBy("crmeOrd").asc();
 		return super.selectByExample(e);
 	}
+
+	@Override
+	public Integer batchDelete(CoreMenu model) {
+		List<String> strList = model.getStrList();
+		if(strList.size()>0){
+			List<CoreMenu> list = this.getAllChild(model);
+			List<String> uuids = MyUtils.getProperties(list, "crmeUuid");
+			uuids.addAll(strList);
+			List<String> ids = MyUtils.removeDuplicate(uuids);
+			model.setStrList(ids);
+		}
+		return super.batchDelete(model);
+	}
+	
+	/**
+	 * 递归查询所有菜单
+	 * @param model
+	 * @return
+	 */
+	private List<CoreMenu> getAllChild(CoreMenu model){
+		Example e = new Example(CoreMenu.class);
+		Criteria cn = e.createCriteria();
+		cn.andIn("crmeParentUuid", model.getStrList());
+		List<CoreMenu> list = super.selectByExample(e);
+		if(list.size()>0){
+			List<String> strList = MyUtils.getProperties(list, "crmeUuid");
+			model.setStrList(strList);
+			list.addAll(this.getAllChild(model));
+		}
+		return list;
+	}
+	
 }

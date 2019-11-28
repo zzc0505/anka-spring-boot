@@ -8,6 +8,7 @@ import com.anka.base.model.BaseResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class CoreRoleController extends BaseController<CoreRole>{
 
     @Resource
     private CoreRoleService coreRoleService;
+    
+    @RequestMapping("roleedit")
+    public ModelAndView roleEdit(CoreRole model){
+    	return super.success(coreRoleService.roleEdit(model), "/core/role/roleedit");
+    }
 
     @RequestMapping("/doSave")
     @ResponseBody

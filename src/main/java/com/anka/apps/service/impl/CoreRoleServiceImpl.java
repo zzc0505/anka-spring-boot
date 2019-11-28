@@ -29,6 +29,14 @@ public class CoreRoleServiceImpl extends CrudBaseServiceSupport<CoreRole> implem
     private CoreRoleMapper coreRoleMapper;
 
 	@Override
+	public CoreRole roleEdit(CoreRole model) {
+		if(StringUtils.hasText(model.getCrreUuid())){
+			model = super.get(model.getCrreUuid());
+		}
+		return model;
+	}
+
+	@Override
 	public Integer doSave(CoreRole model) {
 		if(StringUtils.hasText(model.getCrreUuid())){
 			return super.update(model);

@@ -15,74 +15,68 @@ input:-webkit-autofill {
 </style>
 </head>
 <body class="layui-layout-body">
-	<div style="margin: 0 auto;width: 40%;">
-		<fieldset class="layui-elem-field layui-field-title">
-			<legend>添加角色</legend>
-			<div class="layui-field-box">
-			 	<div class="layui-form layui-form-pane" lay-filter="roleedit" >
-					<div class="layui-form-item"></div>
-					<div class="layui-form-item">
-						<label class="layui-form-label"><i
-							class="layui-icon layui-icon-user"></i> 角色名</label>
-						<div class="layui-input-block">
-							<input name="crreName" class="layui-input" type="text"
-								placeholder="请输入角色名" autocomplete="off" lay-verify="required" />
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label"><i
-							class="layui-icon layui-icon-auz"></i> 唯一标识</label>
-						<div class="layui-input-block">
-							<input name="crreKey" class="layui-input" type="text"
-								placeholder="请输入唯一标识" autocomplete="off" lay-verify="required" />
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label"><i
-							class="layui-icon layui-icon-read"></i> 角色说明</label>
-						<div class="layui-input-block">
-							<input name="crreNote" class="layui-input" type="text"
-								placeholder="请输入角色说明" autocomplete="off" lay-verify="required" />
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label"><i
-							class="layui-icon layui-icon-ok"></i> 状态</label>
-						<div class="layui-input-block">
-							<input type="radio" name="crreStatus" value="0" title="启用"
-								checked="checked" /> <input type="radio" name="crreStatus"
-								value="1" title="禁用" />
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label"><i
-							class="layui-icon layui-icon-form"></i> 排序号</label>
-						<div class="layui-input-block">
-							<input name="crreOrd" class="layui-input" type="text"
-								placeholder="请输入排序号" autocomplete="off" />
-						</div>
-					</div>
-					<div class="layui-form-item layui-form-text">
-						<label class="layui-form-label"><i
-							class="layui-icon layui-icon-username"></i>拥有者</label>
-						<div class="layui-input-block">
-							<textarea name="strMap.user" id="user" placeholder="请输入内容"
-								class="layui-textarea"></textarea>
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<div class="layui-btn-container">
-							<button class="layui-btn layui-btn-fluid" lay-submit
-								lay-filter="submit">
-								<i class="layui-icon layui-icon-ok-circle"></i>提交
-							</button>
-						</div>
-					</div>
-					<#if data.strMap??&&data.strMap.CMD!="add"> <input type="hidden" name="crreUuid"></#if>
-					<input type="hidden" name="strList" id="strList">
+	<div class="layui-fluid">
+		<div class="layui-form layui-form-pane" lay-filter="roleedit" >
+			<div class="layui-form-item"></div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"><i
+					class="layui-icon layui-icon-user"></i> 角色名</label>
+				<div class="layui-input-block">
+					<input name="crreName" value="${data.crreName!''}" class="layui-input" type="text"
+						placeholder="请输入角色名" autocomplete="off" lay-verify="required" />
 				</div>
 			</div>
-		</fieldset>
+			<div class="layui-form-item">
+				<label class="layui-form-label"><i
+					class="layui-icon layui-icon-auz"></i> 唯一标识</label>
+				<div class="layui-input-block">
+					<input name="crreKey" value="${data.crreKey!''}" class="layui-input" type="text"
+						placeholder="请输入唯一标识" autocomplete="off" lay-verify="required" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"><i
+					class="layui-icon layui-icon-read"></i> 角色说明</label>
+				<div class="layui-input-block">
+					<input name="crreNote" value="${data.crreNote!''}" class="layui-input" type="text"
+						placeholder="请输入角色说明" autocomplete="off" lay-verify="required" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"><i
+					class="layui-icon layui-icon-ok"></i> 状态</label>
+				<div class="layui-input-block">
+					<input type="radio" name="crreStatus" value="0" title="启用" <#if !data.crreStatus??||data.crreStatus=="0">checked="checked"</#if> /> 
+					<input type="radio" name="crreStatus" value="1" title="禁用" <#if data.crreStatus??&&data.crreStatus=="1">checked="checked"</#if> />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"><i
+					class="layui-icon layui-icon-form"></i> 排序号</label>
+				<div class="layui-input-block">
+					<input name="crreOrd" value="${data.crreOrd!''}" class="layui-input" type="text"
+						placeholder="请输入排序号" autocomplete="off" />
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label"><i
+					class="layui-icon layui-icon-username"></i>拥有者</label>
+				<div class="layui-input-block">
+					<textarea name="strMap.user" id="user" placeholder="请输入内容"
+						class="layui-textarea"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-btn-container">
+					<button class="layui-btn layui-btn-fluid" lay-submit
+						lay-filter="submit">
+						<i class="layui-icon layui-icon-ok-circle"></i>提交
+					</button>
+				</div>
+			</div>
+			<input type="hidden" name="crreUuid" value="${data.crreUuid!''}">
+			<input type="hidden" name="strList" id="strList">
+		</div>
 	</div>
 	<script src="${base}/js/layui/layui.js"></script>
 	<script>

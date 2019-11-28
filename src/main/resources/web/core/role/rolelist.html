@@ -19,7 +19,7 @@
 			<div class="layui-card">
 				<div class="table-search layui-card-header layui-admin-card-header">
 					<button class="layui-btn" data-type="add">添加</button>
-					<button class="layui-btn" data-type="del">删除</button>
+					<button class="layui-btn  layui-btn-danger" data-type="del">删除</button>
 					<div class="layui-inline">
 						<label class="layui-form-label">搜索</label>
 						<div class="layui-input-block">
@@ -30,11 +30,15 @@
 					<button class="layui-btn" data-type="remove">清除</button>
 				</div>
 				<div class="layui-card-body layui-admin-card-body">
-				    <table class="layui-hide" id="datatable"></table>
+				    <table class="layui-hide" id="datatable" lay-filter="datatable"></table>
 				</div>
 			</div>
 		</div>
 		<script src="${base}/js/layui/layui.js"></script>
+		<script type="text/html" id="toolBar">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
 		<script>
 			layui.use(['element','layer','table'],function(){
 				var element = layui.element
@@ -63,13 +67,45 @@
 				      		}
 					     }}
 				      	,{field:'crreOrd',title: '排序',align:'center', sort: true}
+				      	,{title: '操作', toolbar: '#toolBar',align:'center'}
 				    ]]
 				});
+				
+				//监听行工具事件
+				table.on('tool(datatable)', function(obj){
+					var data = obj.data;
+					 switch(obj.event){
+					 	case 'edit':
+					 		var url = "${base}/core/role/roleedit?crreUuid="+data.crreUuid;
+							layer.open({
+								title:"编辑菜单",
+								type: 2,
+								content:url,
+								area: ['450px', '530px']
+							});
+					 	break;
+					 	case 'del':
+					 		$.post("${base}/core/role/batchDelete",{"strList":data.crreUuid},function(res){
+								if(res.code == 0){
+									layer.msg(res.msg+'1秒后关闭', {icon: 1, time: 1000}, function(){
+										table.reload('datatable',{});
+									});
+								}
+							});
+					 	break;
+					 }
+				});
+				
 				//定义查询动作
 				var $ = layui.$, active = {
 					add: function(){
-						var url = "${base}/core/role/roleedit?"+encodeURIComponent("strMap['CMD']")+"=add";
-						window.location.href= url;
+						var url = "${base}/core/role/roleedit";
+						layer.open({
+							title:"添加菜单",
+							type: 2,
+							content:url,
+							area: ['450px', '530px']
+						});
 					}
 					,del: function(){
 						var data = table.checkStatus('datatable').data;

@@ -12,6 +12,12 @@ import com.anka.base.service.CrudBaseService;
 * @version 1.0.0
 */
 public interface CoreRoleService extends CrudBaseService<CoreRole> {
+	/**
+	 * 编辑角色
+	 * @param model
+	 * @return
+	 */
+	public CoreRole roleEdit(CoreRole model);
 	
 	/**
 	 * 保存或更新
